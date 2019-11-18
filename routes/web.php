@@ -15,8 +15,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/*------Authentication's Routes----*/
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
+/*------Products' Routes-----------*/
+Route::resource('/products','ProductController');
+
+Route::get('/products/{id}/confirmDelete','ProductController@confirmDelete');
+
+/*------Companies' Routes-----------*/
+Route::resource('/companies','CompanyController');
+
+Route::get('/companies/{id}/confirmDelete','CompanyController@confirmDelete');
+  
+/*------Categories' Routes-----------*/
 Route::resource('/categories','CategoryController');
 Route::get('/categories/{id}/confirmDelete','CategoryController@confirmDelete');
