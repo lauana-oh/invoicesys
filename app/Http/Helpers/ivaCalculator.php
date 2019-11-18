@@ -7,10 +7,21 @@ class ivaCalculator
     private $ivaInteger;
     private $ivaPercent;
     
-    public function __construct($ivaInteger)
+    public function convertIvaIntoPercentage()
     {
-        $ivaInteger=intval($ivaInteger);
-        $this->setIvaInteger($ivaInteger);
+        return $this->calculateIvaPercent();
+    }
+    
+    private function calculateIvaPercent()
+    {
+        $iva =$this->getIvaInteger();
+        $this->ivaPercent=$iva*100;
+        return $this->ivaPercent;
+    }
+    
+    private function getIvaInteger()
+    {
+        return $this->ivaInteger;
     }
     
     public function setIvaInteger($ivaInteger)
@@ -18,13 +29,26 @@ class ivaCalculator
         $this->ivaInteger = $ivaInteger;
     }
     
-    private function calculateIvaPercent()
+
+    public function convertIvaIntoInteger()
     {
-        $this->ivaPercent = ($this->ivaInteger/100);
+        return $this->calculateIvaInteger();
     }
-    public function convertIvaIntoPercentage()
+    
+    private function calculateIvaInteger()
     {
-        $this->ivaPercent = $this->calculateIvaPercent();
+        $iva = $this->getIvaPercent();
+        $this->ivaInteger = $iva/100;
+        return $this->ivaInteger;
+    }
+    
+    private function getIvaPercent()
+    {
         return $this->ivaPercent;
+    }
+    
+    public function setIvaPercent($ivaPercent)
+    {
+        $this->ivaPercent = $ivaPercent;
     }
 }

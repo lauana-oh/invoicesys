@@ -20,8 +20,15 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        $iva = new ivaCalculator();
+        $categories = Category::all();
+        foreach ($categories as $category){
+            $iva->setIvaInteger($category->iva);
+            $category->iva = $iva->convertIvaIntoPercentage();
+        }
+
         return view('category.index', [
-            'categories' => Category::all()
+            'categories' => $categories
         ]);
     }
 
@@ -48,9 +55,11 @@ class CategoryController extends Controller
             'description' => 'required | min: 5',
             'iva' => 'numeric'
         ]);
-        $iva= $request->get('iva');
-        $ivaPercent = new ivaCalculator($iva);
-        dd($ivaPercent);
+
+        $ivaPercent = new ivaCalculator();
+        $ivaPercent->setIvaPercent($validData['iva']);
+        $ivaPercent= $ivaPercent->convertIvaIntoInteger();
+
         $category = new Category();
         $category->name = $validData['name'];
         $category->description = $validData['description'];
