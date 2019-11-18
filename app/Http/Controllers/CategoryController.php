@@ -77,7 +77,13 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        $iva = new ivaCalculator();
+        $iva->setIvaInteger($category->iva);
+        $category->iva = $iva->convertIvaIntoPercentage();
+    
+        return view('category.show', [
+            'category' => $category
+        ]);
     }
 
     /**

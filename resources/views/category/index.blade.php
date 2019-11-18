@@ -29,7 +29,7 @@
                             @foreach($categories as $category)
                                 <tr>
                                     <td>{{$category->id}}</td>
-                                    <td>{{$category->name}}</td>
+                                    <td><a href="/categories/{{$category->id}}">{{$category->name}}</a></td>
                                     <td>{{$category->description}}</td>
                                     <td>{{$category->iva}} %</td>
                                     <td><a href="/categories/{{$category->id}}/edit">Edit</a></td>
