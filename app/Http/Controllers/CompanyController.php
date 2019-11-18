@@ -120,6 +120,14 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        $company->delete();
+        return redirect('/companies');
+    }
+
+    public function confirmDelete($id){
+        $company = Company::find($id);
+        return view('company.confirmDelete', [
+            'company' => $company
+        ]);
     }
 }
