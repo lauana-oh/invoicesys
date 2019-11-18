@@ -115,6 +115,14 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect('/products');
+    }
+    
+    public function confirmDelete($id){
+        $product = Product::find($id);
+        return view('product.confirmDelete', [
+            'product' => $product
+        ]);
     }
 }

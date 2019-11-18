@@ -22,3 +22,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 /*------Products' Routes-----------*/
 Route::resource('/products','ProductController');
+
+Route::get('/products/{id}/confirmDelete','ProductController@confirmDelete');
