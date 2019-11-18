@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Helpers\ivaCalculator;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -31,7 +32,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
@@ -42,7 +43,21 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validData = $request->validate([
+            'name' => 'required | min:3',
+            'description' => 'required | min: 5',
+            'iva' => 'numeric'
+        ]);
+        $iva= $request->get('iva');
+        $ivaPercent = new ivaCalculator($iva);
+        dd($ivaPercent);
+        $category = new Category();
+        $category->name = $validData['name'];
+        $category->description = $validData['description'];
+        $category->iva = $ivaPercent;
+        $category->save();
+    
+        return redirect('/categories');
     }
 
     /**

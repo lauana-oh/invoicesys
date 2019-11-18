@@ -13,8 +13,8 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="row mb-3 ml-1">
-                        <a class="btn btn-primary" href="/categories/create">Create a new category</a>
+                    <div class="row">
+                        <a class="btn btn-primary mb-3 ml-2" href="/categories/create">Create a new category</a>
                     </div>
                     <div class="row">
                         <table class="table">
