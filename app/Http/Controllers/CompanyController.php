@@ -31,7 +31,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        return view('company.create');
     }
 
     /**
@@ -42,7 +42,23 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validData = $request->validate([
+            'name' => 'required | min:3',
+            'nit' => 'required | numeric | min:5',
+            'email' => 'email',
+            'phone' => 'min:7',
+            'address' => 'max:255',
+        ]);
+    
+        $company = new Company();
+        $company->name = $validData['name'];
+        $company->nit = $validData['nit'];
+        $company->email = $validData['email'];
+        $company->phone = $validData['phone'];
+        $company->address = $validData['address'];
+        $company->save();
+    
+        return redirect('/companies');
     }
 
     /**
