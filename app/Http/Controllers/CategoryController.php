@@ -131,6 +131,20 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        
+        return redirect('/categories');
+    }
+    
+    public function confirmDelete($id)
+    {
+        $category = Category::find($id);
+        $iva = new ivaCalculator();
+        $iva->setIvaInteger($category->iva);
+        $category->iva = $iva->convertIvaIntoPercentage();
+    
+        return view('category.confirmDelete', [
+            'category' => $category
+        ]);
     }
 }
