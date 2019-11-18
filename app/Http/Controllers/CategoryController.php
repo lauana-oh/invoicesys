@@ -88,7 +88,12 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        $iva = new ivaCalculator();
+        $iva->setIvaInteger($category->iva);
+        $category->iva = $iva->convertIvaIntoPercentage();
+        return view('category.edit', [
+            'category' => $category
+        ]);
     }
 
     /**
@@ -100,7 +105,22 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $validData = $request->validate([
+            'name' => 'required | min:3',
+            'description' => 'required | min: 5',
+            'iva' => 'numeric'
+        ]);
+    
+        $ivaPercent = new ivaCalculator();
+        $ivaPercent->setIvaPercent($validData['iva']);
+        $ivaPercent= $ivaPercent->convertIvaIntoInteger();
+    
+        $category->name = $validData['name'];
+        $category->description = $validData['description'];
+        $category->iva = $ivaPercent;
+        $category->save();
+    
+        return redirect('/categories');
     }
 
     /**
