@@ -66,7 +66,7 @@ class ProductController extends Controller
     {
         //
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
@@ -75,7 +75,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('product.edit', [
+            'product' => $product
+        ]);
     }
 
     /**
@@ -87,7 +89,22 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $validData = $request->validate([
+            'name' => 'required | min:3',
+            'description' => 'required | min:8',
+            'unit_price' => 'required | numeric',
+            'stock' => 'numeric',
+            'category_id' => 'numeric',
+        ]);
+    
+        $product->name = $validData['name'];
+        $product->description = $validData['description'];
+        $product->unit_price = $validData['unit_price'];
+        $product->stock = $validData['stock'];
+        $product->category_id = $validData['category_id'];
+        $product->save();
+    
+        return redirect('/products');
     }
 
     /**
