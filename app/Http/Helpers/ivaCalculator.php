@@ -16,6 +16,7 @@ class ivaCalculator
     {
         $iva =$this->getIvaInteger();
         $this->ivaPercent=$iva*100;
+        $this->setIvaPercent($this->ivaPercent);
         return $this->ivaPercent;
     }
     
@@ -39,6 +40,7 @@ class ivaCalculator
     {
         $iva = $this->getIvaPercent();
         $this->ivaInteger = $iva/100;
+        $this->setIvaInteger($this->ivaInteger);
         return $this->ivaInteger;
     }
     

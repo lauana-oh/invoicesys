@@ -18,17 +18,26 @@ class ivaCalculatorTest extends TestCase
     private $ivaInteger;
     private $ivaPercent;
     
-    public function set_parameters()
-    {
-        $this->ivaInteger= 20;
-        $this->ivaPercent= new ivaCalculator($this->ivaInteger);
-    }
     
     public function test_convert_iva_into_percentage()
     {
-        $calculatedIva = $this->ivaPercent;
-        $expectedIva = $this->ivaInteger/100;
-        $this->assertEquals($expectedIva,$calculatedIva);
+        $iva = new ivaCalculator();
+        $ivaTest = mt_rand() / 1000;
+        $iva->setIvaInteger($ivaTest);
+        
+        $calculatedIva = $iva->convertIvaIntoPercentage();
+        $expectedIva = $ivaTest * 100;
+        $this->assertEquals($expectedIva, $calculatedIva);
+    }
+    
+    public function test_convert_iva_into_integer()
+    {
+        $iva = new ivaCalculator();
+        $ivaTest = mt_rand();
+        $iva->setIvaPercent($ivaTest);
+        
+        $calculatedIva = $iva->convertIvaIntoInteger();
+        $expectedIva = $ivaTest / 100;
+        $this->assertEquals($expectedIva, $calculatedIva);
     }
 }
-
