@@ -26,7 +26,7 @@
                             @foreach($products as $product)
                                 <tr>
                                     <td>{{$product->id}}</td>
-                                    <td>{{$product->name}}</td>
+                                    <td><a href="/products/{{$product->id}}">{{$product->name}}</a></td>
                                     <td>{{$product->description}}</td>
                                     <td>{{$product->unit_price}}</td>
                                     <td>{{$product->stock}} </td>
