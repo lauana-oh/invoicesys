@@ -80,7 +80,9 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        //
+        return view('company.edit', [
+            'company' => $company
+        ]);
     }
 
     /**
@@ -92,7 +94,22 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        //
+        $validData = $request->validate([
+            'name' => 'required | min:3',
+            'nit' => 'required | numeric | min:5',
+            'email' => 'email',
+            'phone' => 'min:7',
+            'address' => 'max:255',
+        ]);
+    
+        $company->name = $validData['name'];
+        $company->nit = $validData['nit'];
+        $company->email = $validData['email'];
+        $company->phone = $validData['phone'];
+        $company->address = $validData['address'];
+        $company->save();
+    
+        return redirect('/companies');
     }
 
     /**
