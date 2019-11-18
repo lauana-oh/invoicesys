@@ -17,7 +17,6 @@ Route::get('/', function () {
 
 /*------Authentication's Routes----*/
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
 
 /*------Products' Routes-----------*/
@@ -29,3 +28,7 @@ Route::get('/products/{id}/confirmDelete','ProductController@confirmDelete');
 Route::resource('/companies','CompanyController');
 
 Route::get('/companies/{id}/confirmDelete','CompanyController@confirmDelete');
+  
+/*------Categories' Routes-----------*/
+Route::resource('/categories','CategoryController');
+Route::get('/categories/{id}/confirmDelete','CategoryController@confirmDelete');
