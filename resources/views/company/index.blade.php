@@ -24,7 +24,7 @@
                             </tr>
                             @foreach($companies as $company)
                                 <tr>
-                                    <td>{{$company->name}}</td>
+                                    <td><a href="/companies/{{$company->id}}">{{$company->name}}</a></td>
                                     <td>{{$company->nit}}</td>
                                     <td>{{$company->email}}</td>
                                     <td>{{$company->phone}}</td>
