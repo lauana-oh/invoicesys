@@ -25,7 +25,7 @@
                             @method('put')
                             <label for="name">Product name:</label>
                             <input type="text" class="form-control mb-3" id="name" name="name"
-                                   placeholder="Type company or person full name" value="{{ old("name",$product->name) }}">
+                                   placeholder="Type your product name" value="{{ old("name",$product->name) }}">
                             <label for="description">Description:</label>
                             <input type="text" class="form-control mb-3" name="description"
                                    id="description" value="{{ old("description", $product->description) }}"
