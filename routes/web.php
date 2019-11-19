@@ -33,3 +33,8 @@ Route::get('/companies/{id}/confirmDelete','CompanyController@confirmDelete');
 Route::resource('/categories','CategoryController');
 
 Route::get('/categories/{id}/confirmDelete','CategoryController@confirmDelete');
+
+/*------Invoices' Routes-----------*/
+Route::resource('/invoices','InvoiceController');
+
+Route::get('/invoices/{id}/confirmDelete','InvoiceController@confirmDelete');
