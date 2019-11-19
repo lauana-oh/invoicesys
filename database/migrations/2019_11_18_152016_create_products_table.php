@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('description');
             $table->decimal('unit_price');
             $table->decimal('stock');
-            $table->unsignedInteger('category_id');
+            $table->unsignedBigInteger('category_id');
             $table->timestamps();
         });
     }

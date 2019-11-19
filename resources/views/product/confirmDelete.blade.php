@@ -26,7 +26,8 @@
                             <li><strong>Description:</strong> {{$product->description}}</li>
                             <li><strong>Unit price:</strong>$ {{$product->unit_price}}</li>
                             <li><strong>Stock:</strong> {{$product->stock}}</li>
-                            <li><strong>Category:</strong> {{$product->category_id}}</li>
+                            <li><strong>Category:</strong> {{$product->category->name}}</li>
+                            <li><strong>Iva:</strong> {{$product->category->iva}}%</li>
                         </ul>
                     </div>
                     <div class="row ">

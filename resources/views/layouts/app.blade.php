@@ -33,11 +33,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
-                        <li class="pl-4"><a href="/companies">Companies</a></li>
-                        <li class="pl-5"><a href="/products">Products</a></li>
-                        <li class="nav-item"><a href="/categories">Categories</a></li>
-
+                        <li class="pl-5"><a href="/companies">Companies</a></li>
+                        <li class="pl-4"><a href="/products">Products</a></li>
+                        <li class="pl-4"><a href="/categories">Categories</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

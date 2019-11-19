@@ -14,25 +14,23 @@
                     <div class="row">
                         <table class="table">
                             <tr>
-                                <th>ID</th>
-                                <th>Product</th>
-                                <th>Description</th>
-                                <th>Unit Price</th>
-                                <th>Quantity in stock</th>
-                                <th>Category</th>
+                                <th class="text-center">ID</th>
+                                <th class="w-25">Product</th>
+                                <th class="text-center">Unit Price</th>
+                                <th class="text-center">Quantity in stock</th>
+                                <th class="text-center">Category</th>
                                 <th></th>
                                 <th></th>
                             </tr>
                             @foreach($products as $product)
                                 <tr>
-                                    <td>{{$product->id}}</td>
+                                    <td class="text-center">{{$product->id}}</td>
                                     <td><a href="/products/{{$product->id}}">{{$product->name}}</a></td>
-                                    <td>{{$product->description}}</td>
-                                    <td>{{$product->unit_price}}</td>
-                                    <td>{{$product->stock}} </td>
-                                    <td>{{$product->category_id}}</td>
-                                    <td><a href="/products/{{$product->id}}/edit">Edit</a></td>
-                                    <td><a href="/products/{{$product->id}}/confirmDelete">Delete</a> </td>
+                                    <td class="text-center">$ {{$product->unit_price}}</td>
+                                    <td class="text-center">{{$product->stock}} </td>
+                                    <td class="text-center">{{$product->category->name}}</td>
+                                    <td class="text-center"><a href="/products/{{$product->id}}/edit">Edit</a></td>
+                                    <td class="text-center"><a href="/products/{{$product->id}}/confirmDelete">Delete</a> </td>
                                 </tr>
                             @endforeach
                         </table>

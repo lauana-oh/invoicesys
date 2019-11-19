@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
+use App\Http\Helpers\ivaCalculator;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -31,7 +33,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('product.create');
+        return view('product.create', [
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -46,16 +50,20 @@ class ProductController extends Controller
             'name' => 'required | min:3',
             'description' => 'required | min:8',
             'unit_price' => 'required | numeric',
-            'stock' => 'numeric',
-            'category_id' => 'numeric',
+            'stock' => 'numeric'
         ]);
-    
+        
+        $categoryName= $request->get('category');
+        $categories = Category::all();
+        $categories = $categories->keyBy('name');
+        $category= $categories->get($categoryName);
+        
         $product = new Product();
         $product->name = $validData['name'];
         $product->description = $validData['description'];
         $product->unit_price = $validData['unit_price'];
         $product->stock = $validData['stock'];
-        $product->category_id = $validData['category_id'];
+        $product->category_id = $category->id;
         $product->save();
     
         return redirect('/products');
@@ -69,6 +77,10 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $iva = new ivaCalculator();
+        $iva->setIvaInteger($product->category->iva);
+        $product->category->iva = $iva->convertIvaIntoPercentage();
+        
         return view('product.show', [
             'product' => $product
         ]);
@@ -83,7 +95,8 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         return view('product.edit', [
-            'product' => $product
+            'product' => $product,
+            'categories' => Category::all(),
         ]);
     }
 
@@ -100,15 +113,19 @@ class ProductController extends Controller
             'name' => 'required | min:3',
             'description' => 'required | min:8',
             'unit_price' => 'required | numeric',
-            'stock' => 'numeric',
-            'category_id' => 'numeric',
+            'stock' => 'numeric'
         ]);
+    
+        $categoryName= $request->get('category');
+        $categories = Category::all();
+        $categories = $categories->keyBy('name');
+        $category= $categories->get($categoryName);
     
         $product->name = $validData['name'];
         $product->description = $validData['description'];
         $product->unit_price = $validData['unit_price'];
         $product->stock = $validData['stock'];
-        $product->category_id = $validData['category_id'];
+        $product->category_id = $category->id;
         $product->save();
     
         return redirect('/products');
@@ -128,6 +145,11 @@ class ProductController extends Controller
     
     public function confirmDelete($id){
         $product = Product::find($id);
+        
+        $iva = new ivaCalculator();
+        $iva->setIvaInteger($product->category->iva);
+        $product->category->iva = $iva->convertIvaIntoPercentage();
+        
         return view('product.confirmDelete', [
             'product' => $product
         ]);
