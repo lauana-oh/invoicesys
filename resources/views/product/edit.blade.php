@@ -20,7 +20,7 @@
                         @endif
                     </div>
                     <div class="row justify-content-center">
-                        <form action="/products" method="post" class="form-group">
+                        <form action="/products/{{$product->id}}" method="post" class="form-group">
                             @csrf
                             @method('put')
                             <div class="form-group row">
