@@ -69,7 +69,9 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice)
     {
-        //
+        return view('invoice.show', [
+            'invoice' =>$invoice,
+        ]);
     }
 
     /**

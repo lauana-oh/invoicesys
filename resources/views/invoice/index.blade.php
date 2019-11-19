@@ -24,8 +24,8 @@
                             </tr>
                             @foreach($invoices as $invoice)
                                 <tr>
-                                    <td class="text-center">{{$invoice->id}}</td>
-                                    <td><a href="/invoices/{{$invoice->id}}">{{$invoice->client_id}}</a></td>
+                                    <td class="text-center"><a href="/invoices/{{$invoice->id}}">{{$invoice->id}}</a></td>
+                                    <td>{{$invoice->client_id}}</td>
                                     <td class="text-center">{{$invoice->due_date}}</td>
                                     <td class="text-center">{{$invoice->invoice_date}} </td>
                                     <td class="text-center">{{$invoice->delivery_date}}</td>
