@@ -31,7 +31,7 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        return view('invoice.create');
     }
 
     /**
@@ -42,7 +42,23 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validData = $request->validate([
+            'client_id' => 'required | numeric',
+            'vendor_id' => 'required | numeric',
+            'invoice_date' => 'required | date',
+            'delivery_date' => 'required | date',
+            'due_date' => 'required | date'
+        ]);
+        
+        $invoice = new Invoice();
+        $invoice->client_id = $validData['client_id'];
+        $invoice->vendor_id = $validData['vendor_id'];
+        $invoice->invoice_date = $validData['invoice_date'];
+        $invoice->delivery_date = $validData['delivery_date'];
+        $invoice->due_date =$validData['due_date'];
+        $invoice->save();
+        
+        return redirect('/invoices');
     }
 
     /**
@@ -64,7 +80,9 @@ class InvoiceController extends Controller
      */
     public function edit(Invoice $invoice)
     {
-        //
+        return view('invoice.edit', [
+            'invoice' => $invoice,
+        ]);
     }
 
     /**
@@ -76,7 +94,22 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
-        //
+        $validData = $request->validate([
+            'client_id' => 'required | numeric',
+            'vendor_id' => 'required | numeric',
+            'invoice_date' => 'required | date',
+            'delivery_date' => 'required | date',
+            'due_date' => 'required | date'
+        ]);
+    
+        $invoice->client_id = $validData['client_id'];
+        $invoice->vendor_id = $validData['vendor_id'];
+        $invoice->invoice_date = $validData['invoice_date'];
+        $invoice->delivery_date = $validData['delivery_date'];
+        $invoice->due_date =$validData['due_date'];
+        $invoice->save();
+    
+        return redirect('/invoices');
     }
 
     /**

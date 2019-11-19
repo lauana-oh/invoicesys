@@ -20,23 +20,24 @@
                         @endif
                     </div>
                     <div class="row justify-content-center">
-                        <form action="/invoices" method="post" class="form-group">
+                        <form action="/invoices/{{$invoice->id}}" method="post" class="form-group">
                             @csrf
+                            @method('put')
                             <div class="form-row form-group">
                                 <div class="col">
                                     <label for="invoice_date">Invoice Date</label>
                                     <input type="date" name="invoice_date" id="invoice_date" class="form-control"
-                                           value="{{old("invoice_date")}}">
+                                           value="{{old("invoice_date", $invoice->invoice_date)}}">
                                 </div>
                                 <div class="col">
                                     <label for="delivery_date">Delivery Date</label>
                                     <input type="date" name="delivery_date" id="delivery_date" class="form-control"
-                                           value="{{old("delivery_date")}}">
+                                           value="{{old("delivery_date", $invoice->delivery_date)}}">
                                 </div>
                                 <div class="col">
                                     <label for="due_date">Due Date</label>
                                     <input type="date" name="due_date" id="due_date" class="form-control"
-                                           value="{{old("due_date")}}">
+                                           value="{{old("due_date", $invoice->due_date)}}">
                                 </div>
                             </div>
 
@@ -44,7 +45,7 @@
                                 <div class="col">
                                     <label for="client_id">Client</label>
                                     <input type="number" name="client_id" id="client_id" class="form-control"
-                                           value="{{old("client_id")}}">
+                                           value="{{old("client_id", $invoice->client_id)}}">
                                 </div>
                             </class>
 
@@ -52,7 +53,7 @@
                                 <div class="col">
                                     <label for="vendor_id">Vendor</label>
                                     <input type="number" name="vendor_id" id="vendor_id" class="form-control"
-                                           value="{{old("vendor_id")}}">
+                                           value="{{old("vendor_id", $invoice->vendor_id)}}">
                                 </div>
                             </class>
 

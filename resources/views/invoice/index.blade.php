@@ -26,7 +26,7 @@
                                 <tr>
                                     <td class="text-center">{{$invoice->id}}</td>
                                     <td><a href="/invoices/{{$invoice->id}}">{{$invoice->client_id}}</a></td>
-                                    <td class="text-center">$ {{$invoice->due_date}}</td>
+                                    <td class="text-center">{{$invoice->due_date}}</td>
                                     <td class="text-center">{{$invoice->invoice_date}} </td>
                                     <td class="text-center">{{$invoice->delivery_date}}</td>
                                     <td class="text-center"><a href="/invoices/{{$invoice->id}}/edit">Edit</a></td>
