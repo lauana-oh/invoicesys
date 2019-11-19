@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Http\Helpers\ivaCalculator;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -76,6 +77,10 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $iva = new ivaCalculator();
+        $iva->setIvaInteger($product->category->iva);
+        $product->category->iva = $iva->convertIvaIntoPercentage();
+        
         return view('product.show', [
             'product' => $product
         ]);
@@ -140,6 +145,11 @@ class ProductController extends Controller
     
     public function confirmDelete($id){
         $product = Product::find($id);
+        
+        $iva = new ivaCalculator();
+        $iva->setIvaInteger($product->category->iva);
+        $product->category->iva = $iva->convertIvaIntoPercentage();
+        
         return view('product.confirmDelete', [
             'product' => $product
         ]);
