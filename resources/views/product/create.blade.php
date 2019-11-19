@@ -62,6 +62,7 @@
                     <div class="row pt-2 justify-content-center" >
                         <a class="btn btn-secondary" href="/products">Back</a>
                     </div>
+                </div>
             </div>
         </div>
     </div>

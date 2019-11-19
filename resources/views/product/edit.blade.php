@@ -20,32 +20,49 @@
                         @endif
                     </div>
                     <div class="row justify-content-center">
-                        <form action="/products/{{$product->id}}" method="post">
+                        <form action="/products" method="post" class="form-group">
                             @csrf
                             @method('put')
-                            <label for="name">Product name:</label>
-                            <input type="text" class="form-control mb-3" id="name" name="name"
-                                   placeholder="Type your product name" value="{{ old("name",$product->name) }}">
-                            <label for="description">Description:</label>
-                            <input type="text" class="form-control mb-3" name="description"
-                                   id="description" value="{{ old("description", $product->description) }}"
-                                   placeholder="Describe your product">
-                            <label for="unit_price">Unit price:</label>
-                            <input type="number" class="form-control mb-3" id="unit_price" name="unit_price"
-                                   value="{{ old("unit_price",$product->unit_price) }}" step="0.01"
-                                   placeholder="$ 00.00">
-                            <label for="stock">Units in stock:</label>
-                            <input type="number" class="form-control mb-3" id="stock" name="stock" step="0.01"
-                                   value="{{old("stock",$product->stock)}}" placeholder="000">
-                            <label for="category_id">Units in stock:</label>
-                            <input type="number" class="form-control mb-3" id="category_id" name="category_id" step="1"
-                                   value="{{old("category_id",$product->category_id)}}" placeholder="0">
-                            <button class="btn btn-primary form-control mt-2" type="submit">Submit</button>
+                            <div class="form-group row">
+                                <label for="name">Product name:</label>
+                                <input type="text" class="form-control " id="name" name="name"
+                                       placeholder="Type your product name" value="{{ old("name", $product->name) }}">
+                            </div>
+                            <div class="form-group row">
+                                <label for="description">Description:</label>
+                                <textarea class="form-control" name="description" id="description"
+                                          placeholder="Describe your product">{{$product->description}}</textarea>
+                            </div>
+                            <div class="form-group row">
+                                <label for="unit_price">Unit price:</label>
+                                <input type="number" class="form-control" id="unit_price" name="unit_price"
+                                       value="{{ old("unit_price",$product->unit_price) }}" step="0.01"
+                                       placeholder="$ 00.00">
+                            </div>
+                            <div class="form-group row">
+                                <label for="stock">Units in stock:</label>
+                                <input type="number" class="form-control" id="stock" name="stock" step="0.01"
+                                       value="{{old("stock", $product->stock)}}" placeholder="000">
+                            </div>
+                            <div class="form-group row">
+                                <label for="category">Category:</label>
+                                <input list="categories" name="category" id="category" class="form-control"
+                                       value="{{$product->category->name}}">
+                                <datalist id="categories">
+                                    @foreach($categories as $category)
+                                        <option value="{{$category->name}}">
+                                    @endforeach
+                                </datalist>
+                            </div>
+                            <div class="row">
+                                <button class="btn btn-primary form-control mt-2" type="submit">Submit</button>
+                            </div>
                         </form>
                     </div>
-                    <div class="row pt-2 justify-content-center">
-                        <a class="btn btn-secondary" href="/products/">Back</a>
+                    <div class="row pt-2 justify-content-center" >
+                        <a class="btn btn-secondary" href="/products">Back</a>
                     </div>
+                </div>
             </div>
         </div>
     </div>
