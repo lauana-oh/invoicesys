@@ -49,16 +49,20 @@ class ProductController extends Controller
             'name' => 'required | min:3',
             'description' => 'required | min:8',
             'unit_price' => 'required | numeric',
-            'stock' => 'numeric',
-            'category_id' => 'numeric',
+            'stock' => 'numeric'
         ]);
-    
+        
+        $categoryName= $request->get('category');
+        $categories = Category::all();
+        $categories = $categories->keyBy('name');
+        $category= $categories->get($categoryName);
+        
         $product = new Product();
         $product->name = $validData['name'];
         $product->description = $validData['description'];
         $product->unit_price = $validData['unit_price'];
         $product->stock = $validData['stock'];
-        $product->category_id = $validData['category_id'];
+        $product->category_id = $category->id;
         $product->save();
     
         return redirect('/products');
