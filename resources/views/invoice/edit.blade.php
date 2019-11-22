@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Create a new Invoice</div>
+                <div class="card-header">Editing invoice #{{$invoice->id}}</div>
 
                 <div class="card-body">
                     <div class="row">
@@ -43,17 +43,27 @@
 
                             <class class="form-row form-group">
                                 <div class="col">
-                                    <label for="client_id">Client</label>
-                                    <input type="number" name="client_id" id="client_id" class="form-control"
-                                           value="{{old("client_id", $invoice->client_id)}}">
+                                    <label for="client">Client:</label>
+                                    <input list="clients" name="client" id="client" class="form-control"
+                                           placeholder="Select a client" value="{{old("client", $invoice->client->name)}}">
+                                    <datalist id="clients">
+                                        @foreach($companies as $client)
+                                            <option value="{{$client->name}}">NIT: {{$client->nit}}</option>
+                                        @endforeach
+                                    </datalist>
                                 </div>
                             </class>
 
                             <class class="form-row form-group">
                                 <div class="col">
-                                    <label for="vendor_id">Vendor</label>
-                                    <input type="number" name="vendor_id" id="vendor_id" class="form-control"
-                                           value="{{old("vendor_id", $invoice->vendor_id)}}">
+                                    <label for="vendor">Vendor:</label>
+                                    <input list="vendors" name="vendor" id="vendor" class="form-control"
+                                           placeholder="Select a vendor" value="{{old("vendor", $invoice->vendor->name)}}">
+                                    <datalist id="vendors">
+                                        @foreach($companies as $vendor)
+                                            <option value="{{$vendor->name}}">NIT:{{$vendor->nit}}</option>
+                                        @endforeach
+                                    </datalist>
                                 </div>
                             </class>
 

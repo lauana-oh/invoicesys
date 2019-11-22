@@ -22,8 +22,8 @@
                     <div class="row">
                         <ul>
                             <li><strong>ID:</strong> {{$invoice->id}}</li>
-                            <li><strong>Client:</strong> {{$invoice->client_id}}</li>
-                            <li><strong>Vendor:</strong> {{$invoice->vendor_id}}</li>
+                            <li><strong>Client:</strong> {{$invoice->client->name}}</li>
+                            <li><strong>Vendor:</strong> {{$invoice->vendor->name}}</li>
                             <li><strong>Invoice Date:</strong> {{$invoice->invoice_date}}</li>
                             <li><strong>Delivery Date:</strong> {{$invoice->delivery_date}}</li>
                             <li><strong>Due Date:</strong> {{$invoice->due_date}}</li>

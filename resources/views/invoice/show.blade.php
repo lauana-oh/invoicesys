@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header alert-dark">Delete {{$invoice->name}}?</div>
+                <div class="card-header alert-dark">Showing details of invoice #{{$invoice->id}}</div>
 
                 <div class="card-body">
                     <div class="row">
@@ -22,8 +22,8 @@
                     <div class="row">
                         <ul>
                             <li><strong>ID:</strong> {{$invoice->id}}</li>
-                            <li><strong>Client:</strong> {{$invoice->client_id}}</li>
-                            <li><strong>Vendor:</strong> {{$invoice->vendor_id}}</li>
+                            <li><strong>Client:</strong> {{$invoice->client->name}}</li>
+                            <li><strong>Vendor:</strong> {{$invoice->vendor->name}}</li>
                             <li><strong>Invoice Date:</strong> {{$invoice->invoice_date}}</li>
                             <li><strong>Delivery Date:</strong> {{$invoice->delivery_date}}</li>
                             <li><strong>Due Date:</strong> {{$invoice->due_date}}</li>

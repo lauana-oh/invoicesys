@@ -98,16 +98,16 @@ class CompanyController extends Controller
     {
         $validData = $request->validate([
             'name' => 'required | min:3',
-            'nit' => 'required | numeric | min:5',
+            'nit' => 'required | numeric | min:5 | max:11',
             'email' => 'email',
-            'phone' => 'min:7',
+            'phone' => 'min:7 | max:11',
             'address' => 'max:255',
         ]);
     
         $company->name = $validData['name'];
-        $company->nit = $validData['nit'];
+        $company->nit = (int)$validData['nit'];
         $company->email = $validData['email'];
-        $company->phone = $validData['phone'];
+        $company->phone = (int)$validData['phone'];
         $company->address = $validData['address'];
         $company->save();
     

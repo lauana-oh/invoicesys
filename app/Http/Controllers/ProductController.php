@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use App\Http\Helpers\ivaCalculator;
+use App\Http\Helpers\ivaConverter;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -53,9 +53,10 @@ class ProductController extends Controller
             'stock' => 'numeric'
         ]);
         
-        $categoryName= $request->get('category');
         $categories = Category::all();
         $categories = $categories->keyBy('name');
+        
+        $categoryName= $request->get('category');
         $category= $categories->get($categoryName);
         
         $product = new Product();
@@ -77,7 +78,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $iva = new ivaCalculator();
+        $iva = new ivaConverter();
         $iva->setIvaInteger($product->category->iva);
         $product->category->iva = $iva->convertIvaIntoPercentage();
         
@@ -147,7 +148,7 @@ class ProductController extends Controller
     public function confirmDelete($id){
         $product = Product::find($id);
         
-        $iva = new ivaCalculator();
+        $iva = new ivaConverter();
         $iva->setIvaInteger($product->category->iva);
         $product->category->iva = $iva->convertIvaIntoPercentage();
         

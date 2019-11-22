@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\Invoice;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,9 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        return view('invoice.create');
+        return view('invoice.create', [
+            'companies' => Company::all(),
+        ]);
     }
 
     /**
@@ -43,16 +46,23 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         $validData = $request->validate([
-            'client_id' => 'required | numeric',
-            'vendor_id' => 'required | numeric',
             'invoice_date' => 'required | date',
             'delivery_date' => 'required | date',
             'due_date' => 'required | date'
         ]);
         
+        $companies = Company::all();
+        $companies = $companies->keyBy('name');
+        
+        $clientName = $request->get('client');
+        $client = $companies->get($clientName);
+        
+        $vendorName = $request->get('vendor');
+        $vendor = $companies->get($vendorName);
+        
         $invoice = new Invoice();
-        $invoice->client_id = $validData['client_id'];
-        $invoice->vendor_id = $validData['vendor_id'];
+        $invoice->client_id = $client->id;
+        $invoice->vendor_id = $vendor->id;
         $invoice->invoice_date = $validData['invoice_date'];
         $invoice->delivery_date = $validData['delivery_date'];
         $invoice->due_date =$validData['due_date'];
@@ -84,6 +94,7 @@ class InvoiceController extends Controller
     {
         return view('invoice.edit', [
             'invoice' => $invoice,
+            'companies' => Company::all(),
         ]);
     }
 
