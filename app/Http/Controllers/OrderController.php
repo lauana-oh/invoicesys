@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\ivaConverter;
 use App\Invoice;
 use App\Order;
 use App\Product;
@@ -72,11 +73,15 @@ class OrderController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
-    public function edit(Order $order)
+    public function edit(Invoice $invoice,Order $order)
     {
-        //
+        return view('order.edit',[
+            'invoice' => $invoice,
+            'order' => $order,
+            'products' => Product::all(),
+        ]);
     }
 
     /**
@@ -86,9 +91,24 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Invoice $invoice, Order $order)
     {
-        //
+        $validData = $request->validate([
+            'quantity' => 'required | numeric',
+            'product' => 'required',
+        ]);
+    
+        $products = Product::all();
+        $products = $products->keyBy('name');
+    
+        $productName = $validData['product'];
+        $product = clone $products->get($productName);
+    
+        $order->product_id = $product->id;
+        $order->quantity = (int)$validData['quantity'];
+        $order->save();
+    
+        return redirect('/invoices/'.$invoice->id);
     }
 
     /**
@@ -97,8 +117,22 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy(Invoice $invoice, Order $order)
     {
-        //
+        $order->delete();
+        
+        return redirect('/invoices/'.$invoice->id);
+    }
+    
+    public function confirmDelete(Invoice $invoice, Order $order)
+    {
+        $iva = new ivaConverter();
+        $iva->setIvaInteger($order->productIva);
+        $order->productIva = $iva->convertIvaIntoPercentage();
+        
+        return view('order.confirmDelete',[
+            'invoice' => $invoice,
+            'order' => $order,
+        ]);
     }
 }

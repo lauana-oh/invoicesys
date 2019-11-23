@@ -42,4 +42,4 @@ Route::get('/invoices/{id}/confirmDelete','InvoiceController@confirmDelete');
 /*------Invoices' Routes-----------*/
 Route::resource('/invoices/{invoice}/orders','OrderController');
 
-Route::get('/invoices/{invoice}/orders/confirmDelete','OrderController@confirmDelete');
+Route::get('/invoices/{invoice}/orders/{order}/confirmDelete','OrderController@confirmDelete');

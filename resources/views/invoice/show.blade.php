@@ -51,7 +51,7 @@
                 <div class="card-header navbar-nav">
                     <table>
                         <tr>
-                            <th class="col w-75">Order details of invoice #{{$invoice->id}}</th>
+                            <th class="col w-75">Order details of invoice</th>
                             <th class="col"><a class="btn btn-link" href="/invoices/{{$invoice->id}}/orders/create">+ Add product</a></th>
                         </tr>
                     </table>
@@ -71,8 +71,8 @@
                             </tr>
                             @foreach($orders as $order)
                                 <tr>
-                                    <td class="text-center"><a href="/invoices/{{$invoice->id}}/orders/{{$order->id}}">{{$order->id}}</a></td>
-                                    <td>{{$order->product->name}}</td>
+                                    <td class="text-center">{{$order->quantity}}</td>
+                                    <td><a href="/products/{{$order->product->id}}">{{$order->product->name}}</a></td>
                                     <td class="text-center">$ {{$order->unit_price}}</td>
                                     <td class="text-center">$ {{$order->unit_price}} </td>
                                     <td class="text-center">{{$order->productIva}}%</td>
