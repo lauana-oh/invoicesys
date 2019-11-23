@@ -64,9 +64,16 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show(Invoice $invoice, Order $order)
     {
-        //
+        $iva = new ivaConverter();
+        $iva->setIvaInteger($order->productIva);
+        $order->productIva = $iva->convertIvaIntoPercentage();
+    
+        return view('order.show',[
+            'invoice' => $invoice,
+            'order' => $order,
+        ]);
     }
 
     /**

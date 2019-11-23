@@ -72,7 +72,7 @@
                             @foreach($orders as $order)
                                 <tr>
                                     <td class="text-center">{{$order->quantity}}</td>
-                                    <td><a href="/products/{{$order->product->id}}">{{$order->product->name}}</a></td>
+                                    <td><a href="/invoices/{{$invoice->id}}/orders/{{$order->id}}">{{$order->product->name}}</a></td>
                                     <td class="text-center">$ {{$order->unit_price}}</td>
                                     <td class="text-center">$ {{$order->unit_price}} </td>
                                     <td class="text-center">{{$order->productIva}}%</td>
