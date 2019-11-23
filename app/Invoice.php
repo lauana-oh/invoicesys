@@ -15,4 +15,9 @@ class Invoice extends Model
     {
         return $this->belongsTo(Company::class, 'vendor_id');
     }
+
+    public function orders()
+    {
+        return$this->hasMany(Order::class, 'invoice_id');
+    }
 }

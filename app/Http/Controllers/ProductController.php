@@ -50,13 +50,14 @@ class ProductController extends Controller
             'name' => 'required | min:3',
             'description' => 'required | min:8',
             'unit_price' => 'required | numeric',
-            'stock' => 'numeric'
+            'stock' => 'numeric',
+            'category' => 'required',
         ]);
         
         $categories = Category::all();
         $categories = $categories->keyBy('name');
         
-        $categoryName= $request->get('category');
+        $categoryName= $validData['category'];
         $category= $categories->get($categoryName);
         
         $product = new Product();
@@ -114,12 +115,14 @@ class ProductController extends Controller
             'name' => 'required | min:3',
             'description' => 'required | min:8',
             'unit_price' => 'required | numeric',
-            'stock' => 'numeric'
+            'stock' => 'numeric',
+            'category' => 'required',
         ]);
     
-        $categoryName= $request->get('category');
         $categories = Category::all();
         $categories = $categories->keyBy('name');
+    
+        $categoryName= $validData['category'];
         $category= $categories->get($categoryName);
     
         $product->name = $validData['name'];

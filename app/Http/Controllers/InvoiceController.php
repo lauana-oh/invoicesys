@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Http\Helpers\ivaConverter;
 use App\Invoice;
+use App\Order;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -48,16 +50,18 @@ class InvoiceController extends Controller
         $validData = $request->validate([
             'invoice_date' => 'required | date',
             'delivery_date' => 'required | date',
-            'due_date' => 'required | date'
+            'due_date' => 'required | date',
+            'client' => 'required',
+            'vendor' => 'required',
         ]);
         
         $companies = Company::all();
         $companies = $companies->keyBy('name');
         
-        $clientName = $request->get('client');
+        $clientName = $validData['client'];
         $client = $companies->get($clientName);
         
-        $vendorName = $request->get('vendor');
+        $vendorName = $validData['vendor'];
         $vendor = $companies->get($vendorName);
         
         $invoice = new Invoice();
@@ -79,8 +83,16 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice)
     {
+        $iva = new ivaConverter();
+        $orders = Order::all();
+        foreach ($orders as $order){
+            $iva->setIvaInteger($order->productIva);
+            $order->productIva = $iva->convertIvaIntoPercentage();
+        }
+
         return view('invoice.show', [
-            'invoice' =>$invoice,
+            'invoice' => $invoice,
+            'orders' => $orders,
         ]);
     }
 
@@ -108,15 +120,24 @@ class InvoiceController extends Controller
     public function update(Request $request, Invoice $invoice)
     {
         $validData = $request->validate([
-            'client_id' => 'required | numeric',
-            'vendor_id' => 'required | numeric',
             'invoice_date' => 'required | date',
             'delivery_date' => 'required | date',
-            'due_date' => 'required | date'
+            'due_date' => 'required | date',
+            'client' => 'required',
+            'vendor' => 'required',
         ]);
     
-        $invoice->client_id = $validData['client_id'];
-        $invoice->vendor_id = $validData['vendor_id'];
+        $companies = Company::all();
+        $companies = $companies->keyBy('name');
+    
+        $clientName = $validData['client'];
+        $client = $companies->get($clientName);
+    
+        $vendorName = $validData['vendor'];
+        $vendor = $companies->get($vendorName);
+    
+        $invoice->client_id = $client->id;
+        $invoice->vendor_id = $vendor->id;
         $invoice->invoice_date = $validData['invoice_date'];
         $invoice->delivery_date = $validData['delivery_date'];
         $invoice->due_date =$validData['due_date'];
