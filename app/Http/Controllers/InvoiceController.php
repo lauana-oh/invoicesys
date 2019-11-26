@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
+    /**
+     * InvoiceController constructor.
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -22,9 +25,8 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        return view('invoice.index', [
-            'invoices' => Invoice::all(),
-        ]);
+        $invoices = Invoice::all();
+        return view('invoice.index', compact('invoices'));
     }
 
     /**
@@ -34,9 +36,8 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        return view('invoice.create', [
-            'companies' => Company::all(),
-        ]);
+        $companies = Company::all();
+        return view('invoice.create', compact('companies'));
     }
 
     /**
@@ -83,17 +84,8 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice)
     {
-        $iva = new ivaConverter();
-        $orders = Order::all();
-        foreach ($orders as $order){
-            $iva->setIvaInteger($order->productIva);
-            $order->productIva = $iva->convertIvaIntoPercentage();
-        }
-
-        return view('invoice.show', [
-            'invoice' => $invoice,
-            'orders' => $orders,
-        ]);
+        $orders = Order::where('invoice_id', $invoice->id)->get();
+        return view('invoice.show', compact('invoice','orders'));
     }
 
     /**
@@ -104,10 +96,8 @@ class InvoiceController extends Controller
      */
     public function edit(Invoice $invoice)
     {
-        return view('invoice.edit', [
-            'invoice' => $invoice,
-            'companies' => Company::all(),
-        ]);
+        $companies = Company::all();
+        return view('invoice.edit', compact('invoice','companies'));
     }
 
     /**
@@ -162,8 +152,6 @@ class InvoiceController extends Controller
     public function confirmDelete($id)
     {
         $invoice = Invoice::find($id);
-        return view('invoice.confirmDelete', [
-            'invoice' => $invoice,
-        ]);
+        return view('invoice.confirmDelete', compact('invoice'));
     }
 }

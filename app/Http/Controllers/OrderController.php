@@ -50,7 +50,7 @@ class OrderController extends Controller
         $order =new Order();
         $order->invoice_id = $invoice->id;
         $order->product_id = $product->id;
-        $order->quantity = (int)$validData['quantity'];
+        $order->quantity = (float)$validData['quantity'];
         $order->unit_price = (float)$product->unit_price;
         $order->productIva = (float)$product->category->iva;
         $order->save();
@@ -66,10 +66,6 @@ class OrderController extends Controller
      */
     public function show(Invoice $invoice, Order $order)
     {
-        $iva = new ivaConverter();
-        $iva->setIvaInteger($order->productIva);
-        $order->productIva = $iva->convertIvaIntoPercentage();
-    
         return view('order.show',[
             'invoice' => $invoice,
             'order' => $order,
@@ -112,7 +108,7 @@ class OrderController extends Controller
         $product = clone $products->get($productName);
     
         $order->product_id = $product->id;
-        $order->quantity = (int)$validData['quantity'];
+        $order->quantity = (float)$validData['quantity'];
         $order->save();
     
         return redirect('/invoices/'.$invoice->id);

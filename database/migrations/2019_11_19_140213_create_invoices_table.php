@@ -18,7 +18,7 @@ class CreateInvoicesTable extends Migration
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('vendor_id');
             $table->date('invoice_date');
-            $table->date('delivery_date');
+            $table->date('delivery_date')->nullable();
             $table->date('due_date');
             $table->timestamps();
             $table->foreign('client_id')->references('id')->on('companies');

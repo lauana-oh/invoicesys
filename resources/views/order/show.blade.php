@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row d-flex justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header alert-dark">Showing order #{{$order->id}} details</div>
@@ -11,15 +11,15 @@
 
                     <div class="row">
                         <ul>
-                            <li><strong>ID:</strong> #{{$order->id}}</li>
-                            <li><strong>Invoice:</strong> #{{$order->invoice->id}}</li>
+                            <li><strong>Order:</strong>{{$order->idFormatted}}</li>
+                            <li><strong>Invoice:</strong>{{$order->invoice->idFormatted}}</li>
                             <li><strong>Product:</strong> {{$order->product->name}}</li>
                             <li><strong>Category:</strong> {{$order->product->category->name}}</li>
-                            <li><strong>Unit price:</strong> ${{$order->unit_price}}</li>
-                            <li><strong>Quantity:</strong> {{$order->quantity}}</li>
-                            <li><strong>Total price:</strong> ${{$order->unit_price}}</li>
-                            <li><strong>Iva:</strong> {{$order->productIva}}%</li>
-                            <li><strong>Iva paid:</strong> ${{$order->productIva}}</li>
+                            <li><strong>Unit price:</strong>{{$order->unitPriceFormatted}}</li>
+                            <li><strong>Quantity:</strong> {{$order->quantityFormatted}}</li>
+                            <li><strong>Total price:</strong>{{$order->totalPriceFormatted}}</li>
+                            <li><strong>Iva:</strong> {{$order->productIvaFormatted}}</li>
+                            <li><strong>Iva paid:</strong> {{$order->productIvaPaidFormatted}}</li>
                         </ul>
                     </div>
                     <div class="row ">

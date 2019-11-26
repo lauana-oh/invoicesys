@@ -37,9 +37,9 @@ Route::get('/categories/{id}/confirmDelete','CategoryController@confirmDelete');
 /*------Invoices' Routes-----------*/
 Route::resource('/invoices','InvoiceController');
 
-Route::get('/invoices/{id}/confirmDelete','InvoiceController@confirmDelete');
+Route::get('/invoices/{id}/confirmDelete','InvoiceController@confirmDelete')->name('invoices.confirmDelete');
 
-/*------Invoices' Routes-----------*/
+/*------Orders' Routes-----------*/
 Route::resource('/invoices/{invoice}/orders','OrderController');
 
-Route::get('/invoices/{invoice}/orders/{order}/confirmDelete','OrderController@confirmDelete');
+Route::get('/invoices/{invoice}/orders/{order}/confirmDelete','OrderController@confirmDelete')->name('orders.confirmDelete');

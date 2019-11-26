@@ -21,7 +21,7 @@
                     </div>
                     <div class="row">
                         <ul>
-                            <li><strong>ID:</strong> {{$invoice->id}}</li>
+                            <li><strong>ID:</strong> {{$invoice->idFormatted}}</li>
                             <li><strong>Client:</strong> {{$invoice->client->name}}</li>
                             <li><strong>Vendor:</strong> {{$invoice->vendor->name}}</li>
                             <li><strong>Invoice Date:</strong> {{$invoice->invoice_date}}</li>

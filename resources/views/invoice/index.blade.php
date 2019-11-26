@@ -9,7 +9,7 @@
 
                 <div class="card-body">
                     <div class="row">
-                        <a class="btn btn-primary mb-4 ml-2" href="/invoices/create">Add a new invoice</a>
+                        <a class="btn btn-primary mb-4 ml-2" href="{{route('invoices.create')}}">Add a new invoice</a>
                     </div>
                     <div class="row">
                         <table class="table">
@@ -24,13 +24,13 @@
                             </tr>
                             @foreach($invoices as $invoice)
                                 <tr>
-                                    <td class="text-center"><a href="/invoices/{{$invoice->id}}">{{$invoice->id}}</a></td>
+                                    <td class="text-center"><a href="{{ route('invoices.show', $invoice) }}">{{$invoice->id}}</a></td>
                                     <td>{{$invoice->client->name}}</td>
                                     <td class="text-center">{{$invoice->due_date}}</td>
                                     <td class="text-center">{{$invoice->invoice_date}} </td>
                                     <td class="text-center">{{$invoice->delivery_date}}</td>
-                                    <td class="text-center"><a href="/invoices/{{$invoice->id}}/edit">Edit</a></td>
-                                    <td class="text-center"><a href="/invoices/{{$invoice->id}}/confirmDelete">Delete</a> </td>
+                                    <td class="text-center"><a href="{{route('invoices.edit', $invoice->id)}}">Edit</a></td>
+                                    <td class="text-center"><a href="{{route('invoices.confirmDelete', $invoice->id)}}">Delete</a></td>
                                 </tr>
                             @endforeach
                         </table>

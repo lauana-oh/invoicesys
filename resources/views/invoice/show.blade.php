@@ -5,22 +5,26 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header alert-dark">Showing details of <strong>Invoice #{{$invoice->id}}</strong></div>
+                <div class="card-header alert-dark">Showing details of <strong>Invoice{{$invoice->idFormatted}}</strong></div>
 
                 <div class="card-body">
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-xl-center mb-3">
                         <table>
                             <tr>
-                                <td class="p-3"><strong>Due Date:</strong> {{$invoice->due_date}}</td>
-                                <td class="p-3"><strong>Delivery Date:</strong> {{$invoice->delivery_date}}</td>
-                                <td class="p-3"><strong>Invoice Date:</strong> {{$invoice->invoice_date}}</td>
+                                <td class="col-auto"><strong>Due Date:</strong> {{$invoice->due_date}}</td>
+                                <td class="col-auto"><strong>Delivery Date:</strong> {{$invoice->delivery_date}}</td>
+                                <td class="col-auto"><strong>Invoice Date:</strong> {{$invoice->invoice_date}}</td>
+                            </tr>
+                            <tr>
+                                <td class="col-auto"><strong>Total:</strong>{{$invoice->totalPaidFormatted}}</td>
+                                <td class="col-auto"><strong>Total IVA:</strong>{{$invoice->totalIvaPaidFormatted}}</td>
                             </tr>
                         </table>
                     </div>
 
-                    <div class="row justify-content-center">
-                        <div class="col justify-content-center">
-                            <ul>
+                    <div class="row justify-content-center mb-3">
+                        <div class="col justify-content-center col-5 border">
+                            <ul class="list-unstyled">
                                 <li><strong>Client:</strong> {{$invoice->client->name}}</li>
                                 <li><strong>NIT:</strong> {{$invoice->client->nit}}</li>
                                 <li><strong>Email:</strong> {{$invoice->client->email}}</li>
@@ -28,8 +32,9 @@
                                 <li><strong>Address:</strong> {{$invoice->client->address}}</li>
                             </ul>
                         </div>
-                        <div class="col justify-content-center">
-                            <ul>
+                        <div class="col col-auto"></div>
+                        <div class="col justify-content-center col-5 border">
+                            <ul class="list-unstyled ">
                                 <li><strong>Vendor:</strong> {{$invoice->vendor->name}}</li>
                                 <li><strong>NIT:</strong> {{$invoice->vendor->nit}}</li>
                                 <li><strong>Email:</strong> {{$invoice->vendor->email}}</li>
@@ -39,9 +44,9 @@
                         </div>
                     </div>
 
-                    <div class="row ">
-                        <a class="btn btn-primary m-2" href="/invoices/{{$invoice->id}}/edit">Edit</a>
-                        <a class="btn btn-primary m-2" href="/invoices/{{$invoice->id}}/confirmDelete">Delete</a>
+                    <div class="row justify-content-center">
+                        <a class="btn btn-primary m-2" href="{{route("invoices.edit", $invoice->id)}}">Edit</a>
+                        <a class="btn btn-primary m-2" href="{{route("invoices.confirmDelete", $invoice->id)}}">Delete</a>
                         <a class="btn btn-secondary m-2" href="/invoices/">Back</a>
                     </div>
                 </div>
@@ -52,7 +57,7 @@
                     <table>
                         <tr>
                             <th class="col w-75">Order details of invoice</th>
-                            <th class="col"><a class="btn btn-link" href="/invoices/{{$invoice->id}}/orders/create">+ Add product</a></th>
+                            <th class="col"><a class="btn btn-link" href="{{route("orders.create", $invoice->id)}}">+ Add product</a></th>
                         </tr>
                     </table>
                 </div>
@@ -71,13 +76,13 @@
                             </tr>
                             @foreach($orders as $order)
                                 <tr>
-                                    <td class="text-center">{{$order->quantity}}</td>
-                                    <td><a href="/invoices/{{$invoice->id}}/orders/{{$order->id}}">{{$order->product->name}}</a></td>
-                                    <td class="text-center">$ {{$order->unit_price}}</td>
-                                    <td class="text-center">$ {{$order->unit_price}} </td>
-                                    <td class="text-center">{{$order->productIva}}%</td>
-                                    <td class="text-center"><a href="/invoices/{{$invoice->id}}/orders/{{$order->id}}/edit">Edit</a></td>
-                                    <td class="text-center"><a href="/invoices/{{$invoice->id}}/orders/{{$order->id}}/confirmDelete">Delete</a> </td>
+                                    <td class="text-center">{{$order->quantityFormatted}}</td>
+                                    <td><a href="{{route("orders.show", [$invoice->id, $order->id])}}">{{$order->product->name}}</a></td>
+                                    <td class="text-center">{{$order->unitPriceFormatted}}</td>
+                                    <td class="text-center">{{$order->totalPriceFormatted}} </td>
+                                    <td class="text-center">{{$order->productIvaFormatted}}</td>
+                                    <td class="text-center"><a href="{{route("orders.edit", [$invoice->id, $order->id])}}">Edit</a></td>
+                                    <td class="text-center"><a href="{{route("orders.confirmDelete", [$invoice->id, $order->id])}}">Delete</a> </td>
                                 </tr>
                             @endforeach
                         </table>
