@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Http\Helpers\ivaConverter;
+use App\Http\Requests\StoreInvoice;
+use App\Http\Requests\InvoiceStoreRequest;
+use App\Http\Resources\Invoices;
 use App\Invoice;
 use App\Order;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\In;
 
 class InvoiceController extends Controller
 {
@@ -16,6 +20,11 @@ class InvoiceController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+    
+    public function findInvoice(Route $route)
+    {
+        $this->invoice = Invoice::findOrFail($route->getParameter('invoice'));
     }
     
     /**
@@ -37,7 +46,8 @@ class InvoiceController extends Controller
     public function create()
     {
         $companies = Company::all();
-        return view('invoice.create', compact('companies'));
+        $invoice = new Invoice();
+        return view('invoice.create', compact('companies', 'invoice'));
     }
 
     /**
@@ -46,31 +56,9 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InvoiceStoreRequest $request, Invoice $invoice)
     {
-        $validData = $request->validate([
-            'invoice_date' => 'required | date',
-            'delivery_date' => 'required | date',
-            'due_date' => 'required | date',
-            'client' => 'required',
-            'vendor' => 'required',
-        ]);
-        
-        $companies = Company::all();
-        $companies = $companies->keyBy('name');
-        
-        $clientName = $validData['client'];
-        $client = $companies->get($clientName);
-        
-        $vendorName = $validData['vendor'];
-        $vendor = $companies->get($vendorName);
-        
-        $invoice = new Invoice();
-        $invoice->client_id = $client->id;
-        $invoice->vendor_id = $vendor->id;
-        $invoice->invoice_date = $validData['invoice_date'];
-        $invoice->delivery_date = $validData['delivery_date'];
-        $invoice->due_date =$validData['due_date'];
+        $invoice = storeInvoice($request, $invoice);
         $invoice->save();
         
         return redirect('/invoices');
@@ -151,7 +139,7 @@ class InvoiceController extends Controller
     
     public function confirmDelete($id)
     {
-        $invoice = Invoice::find($id);
+        $invoice = Invoice::findOrFail($id);
         return view('invoice.confirmDelete', compact('invoice'));
     }
 }

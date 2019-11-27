@@ -26,7 +26,7 @@
                                 <div class="col">
                                     <label for="invoice_date">Invoice Date</label>
                                     <input type="date" name="invoice_date" id="invoice_date" class="form-control"
-                                           value="{{old("invoice_date")}}">
+                                           value="{{old("invoice_date"), $invoice->invoice_date}}">
                                 </div>
                                 <div class="col">
                                     <label for="delivery_date">Delivery Date</label>

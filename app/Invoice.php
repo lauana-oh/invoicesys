@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Invoice extends Model
 {
+    protected $guarded = ['*'];
     /**
      * Return relationship between client and invoices
      * @return BelongsTo
@@ -35,6 +36,10 @@ class Invoice extends Model
         return $this->hasMany(Order::class, 'invoice_id');
     }
     
+    protected $casts = [
+        'created_at' => 'datetime:d-m-Y',
+        'updated_at' => 'datetime:d-m-Y',
+    ];
     /**
      * Return Id in #000000 format
      * @return string
@@ -44,13 +49,21 @@ class Invoice extends Model
         return sprintf(" #%'06s", $this->id);
     }
     
+    /**
+     * Return Total of invoice in money format
+     * @return string
+     */
     public function getTotalPaidFormattedAttribute()
     {
         setlocale(LC_MONETARY, 'es_CO.UTF-8');
         return money_format(" %.2n", $this->totalPaid);
     }
     
-    public function getTotalPaidAttribute()
+    /**
+     * Return total of invoice in number format
+     * @return float
+     */
+    public function getTotalPaidAttribute(): float
     {
         $total=0;
         $orders = $this->orders;
@@ -60,13 +73,21 @@ class Invoice extends Model
         return $total;
     }
     
+    /**
+     * Return total IVA of invoice in money format
+     * @return string
+     */
     public function getTotalIvaPaidFormattedAttribute()
     {
         setlocale(LC_MONETARY, 'es_CO.UTF-8');
         return money_format(" %.2n", $this->totalIvaPaid);
     }
     
-    public function getTotalIvaPaidAttribute()
+    /**
+     * Return total IVA of invoice in number format
+     * @return float
+     */
+    public function getTotalIvaPaidAttribute(): float
     {
         $totalIvaPaid=0;
         $orders = $this->orders;
@@ -74,5 +95,25 @@ class Invoice extends Model
             $totalIvaPaid += $order->productIvaPaid;
         }
         return $totalIvaPaid;
+    }
+    
+    public function storeInvoice($request, $invoice)
+    {
+        $companies = Company::all();
+        $companies = $companies->keyBy('name');
+    
+        $clientName = $request->client;
+        $client = $companies->get($clientName);
+    
+        $vendorName = $request->vendor;
+        $vendor = $companies->get($vendorName);
+    
+        $invoice->client_id = $client->id;
+        $invoice->vendor_id = $vendor->id;
+        $invoice->invoice_date = $request->invoice_date;
+        $invoice->delivery_date = $request->delivery_date;
+        $invoice->due_date =$request->due_date;
+        
+        return $invoice;
     }
 }
