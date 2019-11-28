@@ -19,9 +19,10 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->decimal('quantity');
             $table->decimal('unit_price');
-            $table->decimal('productIva');
+            $table->decimal('product_iva');
             $table->foreign('invoice_id')->references('id')->on('invoices');
             $table->foreign('product_id')->references('id')->on('products');
+            $table->unique(['invoice_id', 'product_id']);
             $table->timestamps();
         });
     }

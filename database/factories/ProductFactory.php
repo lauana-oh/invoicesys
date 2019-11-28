@@ -12,7 +12,5 @@ $factory->define(Product::class, function (Faker $faker) {
         'unit_price' => $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 2000),
         'stock'=>$faker->randomFloat(2,0,1000),
         'category_id' => \App\Category::all()->keyBy('id')->keys()->random(),
-        'created_at' => $faker->dateTimeThisDecade,
-        'updated_at' => $faker->dateTimeThisDecade,
     ];
 });

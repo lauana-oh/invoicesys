@@ -28,7 +28,7 @@
                             <li><strong>Unit price:</strong> ${{$order->unit_price}}</li>
                             <li><strong>Quantity:</strong> {{$order->quantity}}</li>
                             <li><strong>Total price:</strong> ${{$order->unit_price}}</li>
-                            <li><strong>Iva:</strong> {{$order->productIva}}%</li>
+                            <li><strong>Iva:</strong> {{$order->product_iva}}%</li>
                             <li><strong>Iva paid:</strong> ${{$order->productIva}}</li>
                         </ul>
                     </div>

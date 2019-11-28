@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Company;
 use Illuminate\Foundation\Http\FormRequest;
 
-class InvoiceStoreRequest extends FormRequest
+class InvoiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,10 +27,10 @@ class InvoiceStoreRequest extends FormRequest
     {
         return [
             'invoice_date' => 'required | date',
-            'delivery_date' => 'nullable | date',
-            'due_date' => 'required | date',
-            'client' => 'required',
-            'vendor' => 'required',
+            'delivery_date' => 'nullable | date | after_or_equal:invoice_date',
+            'due_date' => 'required | date | after_or_equal:delivery_date',
+            'client' => 'required | exists:companies,name',
+            'vendor' => 'required | exists:companies,name| different:client',
         ];
     }
     

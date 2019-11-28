@@ -5,7 +5,7 @@
     <div class="row d-flex justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header alert-dark">Showing order #{{$order->id}} details</div>
+                <div class="card-header alert-dark">Showing order {{$order->id}} details</div>
 
                 <div class="card-body">
 
@@ -23,9 +23,9 @@
                         </ul>
                     </div>
                     <div class="row ">
-                        <a class="btn btn-primary m-2" href="/invoices/{{$invoice->id}}/orders/{{$order->id}}/edit">Edit</a>
-                        <a class="btn btn-primary m-2" href="/invoices/{{$invoice->id}}/orders/{{$order->id}}/confirmDelete">Delete</a>
-                        <a class="btn btn-secondary m-2" href="/invoices/{{$invoice->id}}">Back</a>
+                        <a class="btn btn-primary m-2" href="{{route("orders.edit", [$invoice->id, $order->id])}}">Edit</a>
+                        <a class="btn btn-primary m-2" href="{{route("orders.confirmDelete", [$invoice->id, $order->id])}}">Delete</a>
+                        <a class="btn btn-secondary m-2" href="{{route("invoices.show",$invoice->id)}}">Back</a>
                     </div>
             </div>
         </div>

@@ -9,8 +9,8 @@ $factory->define(Invoice::class, function (Faker $faker) {
     return [
         'client_id' => \App\Company::all()->keyBy('id')->keys()->random(),
         'vendor_id' => \App\Company::all()->keyBy('id')->keys()->random(),
-        'invoice_date' => $faker->date('Y-m-d', 'now'),
-        'delivery_date' => $faker->date('Y-m-d', 'now'),
-        'due_date' => $faker->date('Y-m-d', 'now'),
+        'invoice_date' => $faker->date('Y-m-d', 'delivery_date'),
+        'delivery_date' => $faker->date('Y-m-d', 'due_date'),
+        'due_date' => $faker->date('Y-m-d', '+1 month'),
     ];
 });

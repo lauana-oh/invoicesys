@@ -3,30 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Company;
-use App\Http\Helpers\ivaConverter;
 use App\Http\Requests\StoreInvoice;
-use App\Http\Requests\InvoiceStoreRequest;
+use App\Http\Requests\InvoiceRequest;
 use App\Http\Resources\Invoices;
 use App\Invoice;
 use App\Order;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rules\In;
 
 class InvoiceController extends Controller
 {
-    /**
-     * InvoiceController constructor.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
-    public function findInvoice(Route $route)
-    {
-        $this->invoice = Invoice::findOrFail($route->getParameter('invoice'));
-    }
-    
     /**
      * Display a listing of the resource.
      *
@@ -53,13 +37,13 @@ class InvoiceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param InvoiceStoreRequest $request
+     * @param InvoiceRequest $request
      * @param Invoice $invoice
      * @return \Illuminate\Http\Response
      */
-    public function store(InvoiceStoreRequest $request)
+    public function store(InvoiceRequest $request)
     {
-        $invoice = Invoice::create($request->invoiceData());
+        Invoice::create($request->invoiceData());
         return redirect('/invoices');
     }
 
@@ -94,32 +78,9 @@ class InvoiceController extends Controller
      * @param  \App\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Invoice $invoice)
+    public function update(InvoiceRequest $request, Invoice $invoice)
     {
-        $validData = $request->validate([
-            'invoice_date' => 'required | date',
-            'delivery_date' => 'required | date',
-            'due_date' => 'required | date',
-            'client' => 'required',
-            'vendor' => 'required',
-        ]);
-    
-        $companies = Company::all();
-        $companies = $companies->keyBy('name');
-    
-        $clientName = $validData['client'];
-        $client = $companies->get($clientName);
-    
-        $vendorName = $validData['vendor'];
-        $vendor = $companies->get($vendorName);
-    
-        $invoice->client_id = $client->id;
-        $invoice->vendor_id = $vendor->id;
-        $invoice->invoice_date = $validData['invoice_date'];
-        $invoice->delivery_date = $validData['delivery_date'];
-        $invoice->due_date =$validData['due_date'];
-        $invoice->save();
-    
+        $invoice->update($request->invoiceData());
         return redirect('/invoices');
     }
 

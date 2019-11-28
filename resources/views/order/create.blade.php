@@ -42,7 +42,7 @@
                             </div>
                             <div class="row justify-content-center">
                                 <button class="btn btn-primary m-2" type="submit">Submit</button>
-                                <a class="btn btn-secondary m-2" href="/invoices/{{$invoice->id}}">Back</a>
+                                <a class="btn btn-secondary m-2" href="{{route("invoices.show",$invoice->id)}}">Back</a>
                             </div>
                         </form>
                     </div>

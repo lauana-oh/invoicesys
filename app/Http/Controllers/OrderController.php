@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Helpers\ivaConverter;
+use App\Http\Requests\OrderRequest;
 use App\Invoice;
 use App\Order;
 use App\Product;
@@ -22,10 +23,9 @@ class OrderController extends Controller
      */
     public function create(Invoice $invoice)
     {
-        return view('order.create', [
-            'invoice' => $invoice,
-            'products'=> Product::all(),
-        ]);
+        $products = Product::all();
+        $order = new Order();
+        return view('order.create', compact('invoice', 'products', 'order'));
     }
 
     /**
@@ -34,26 +34,9 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Invoice $invoice)
+    public function store(OrderRequest $request, Invoice $invoice)
     {
-        $validData = $request->validate([
-            'quantity' => 'required | numeric',
-            'product' => 'required',
-        ]);
-    
-        $products = Product::all();
-        $products = $products->keyBy('name');
-        
-        $productName = $validData['product'];
-        $product = clone $products->get($productName);
-
-        $order =new Order();
-        $order->invoice_id = $invoice->id;
-        $order->product_id = $product->id;
-        $order->quantity = (float)$validData['quantity'];
-        $order->unit_price = (float)$product->unit_price;
-        $order->productIva = (float)$product->category->iva;
-        $order->save();
+        Order::create($request->orderStoreData($invoice));
         
         return redirect('/invoices/'.$invoice->id);
     }
@@ -94,22 +77,9 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Invoice $invoice, Order $order)
+    public function update(OrderRequest $request, Invoice $invoice, Order $order)
     {
-        $validData = $request->validate([
-            'quantity' => 'required | numeric',
-            'product' => 'required',
-        ]);
-    
-        $products = Product::all();
-        $products = $products->keyBy('name');
-    
-        $productName = $validData['product'];
-        $product = clone $products->get($productName);
-    
-        $order->product_id = $product->id;
-        $order->quantity = (float)$validData['quantity'];
-        $order->save();
+        $order->update($request->orderUpdateData($invoice));
     
         return redirect('/invoices/'.$invoice->id);
     }
