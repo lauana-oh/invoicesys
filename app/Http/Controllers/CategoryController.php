@@ -26,7 +26,7 @@ class CategoryController extends Controller
             $iva->setIvaInteger($category->iva);
             $category->iva = $iva->convertIvaIntoPercentage();
         }
-
+        
         return view('category.index', [
             'categories' => $categories
         ]);

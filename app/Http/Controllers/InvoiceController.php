@@ -49,18 +49,17 @@ class InvoiceController extends Controller
         $invoice = new Invoice();
         return view('invoice.create', compact('companies', 'invoice'));
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param InvoiceStoreRequest $request
+     * @param Invoice $invoice
      * @return \Illuminate\Http\Response
      */
-    public function store(InvoiceStoreRequest $request, Invoice $invoice)
+    public function store(InvoiceStoreRequest $request)
     {
-        $invoice = storeInvoice($request, $invoice);
-        $invoice->save();
-        
+        $invoice = Invoice::create($request->invoiceData());
         return redirect('/invoices');
     }
 

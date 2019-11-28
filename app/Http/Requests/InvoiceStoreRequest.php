@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Company;
 use Illuminate\Foundation\Http\FormRequest;
 
 class InvoiceStoreRequest extends FormRequest
@@ -33,4 +34,17 @@ class InvoiceStoreRequest extends FormRequest
         ];
     }
     
+    public function invoiceData(){
+        $data = $this->validated();
+        
+        $client_id = Company::all()->keyBy('name')->get($this->validated()['client'])->id;
+        $data['client_id'] = $client_id;
+        unset($data['client']);
+    
+        $vendor_id = Company::all()->keyBy('name')->get($this->validated()['vendor'])->id;
+        $data['vendor_id'] = $vendor_id;
+        unset($data['vendor']);
+        
+        return $data;
+    }
 }

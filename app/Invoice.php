@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Traits\ColumnFillable;
 
 class Invoice extends Model
 {
-    protected $guarded = ['*'];
+    use ColumnFillable;
+
     /**
      * Return relationship between client and invoices
      * @return BelongsTo
