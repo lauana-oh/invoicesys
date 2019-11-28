@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use App\Http\Helpers\ivaCalculator;
+use App\Http\Helpers\ivaConverter;
 use App\Product;
 use Illuminate\Http\Request;
 
@@ -50,12 +50,14 @@ class ProductController extends Controller
             'name' => 'required | min:3',
             'description' => 'required | min:8',
             'unit_price' => 'required | numeric',
-            'stock' => 'numeric'
+            'stock' => 'numeric',
+            'category' => 'required',
         ]);
         
-        $categoryName= $request->get('category');
         $categories = Category::all();
         $categories = $categories->keyBy('name');
+        
+        $categoryName= $validData['category'];
         $category= $categories->get($categoryName);
         
         $product = new Product();
@@ -77,7 +79,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $iva = new ivaCalculator();
+        $iva = new ivaConverter();
         $iva->setIvaInteger($product->category->iva);
         $product->category->iva = $iva->convertIvaIntoPercentage();
         
@@ -113,12 +115,14 @@ class ProductController extends Controller
             'name' => 'required | min:3',
             'description' => 'required | min:8',
             'unit_price' => 'required | numeric',
-            'stock' => 'numeric'
+            'stock' => 'numeric',
+            'category' => 'required',
         ]);
     
-        $categoryName= $request->get('category');
         $categories = Category::all();
         $categories = $categories->keyBy('name');
+    
+        $categoryName= $validData['category'];
         $category= $categories->get($categoryName);
     
         $product->name = $validData['name'];
@@ -140,13 +144,14 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+        
         return redirect('/products');
     }
     
     public function confirmDelete($id){
         $product = Product::find($id);
         
-        $iva = new ivaCalculator();
+        $iva = new ivaConverter();
         $iva->setIvaInteger($product->category->iva);
         $product->category->iva = $iva->convertIvaIntoPercentage();
         

@@ -2,7 +2,7 @@
 
 namespace App\Http\Helpers;
 
-class ivaCalculator
+class ivaConverter
 {
     private $ivaInteger;
     private $ivaPercent;

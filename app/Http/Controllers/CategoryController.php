@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use App\Http\Helpers\ivaCalculator;
+use App\Http\Helpers\ivaConverter;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -20,13 +20,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $iva = new ivaCalculator();
+        $iva = new ivaConverter();
         $categories = Category::all();
         foreach ($categories as $category){
             $iva->setIvaInteger($category->iva);
             $category->iva = $iva->convertIvaIntoPercentage();
         }
-
+        
         return view('category.index', [
             'categories' => $categories
         ]);
@@ -56,7 +56,7 @@ class CategoryController extends Controller
             'iva' => 'numeric'
         ]);
 
-        $ivaPercent = new ivaCalculator();
+        $ivaPercent = new ivaConverter();
         $ivaPercent->setIvaPercent($validData['iva']);
         $ivaPercent= $ivaPercent->convertIvaIntoInteger();
 
@@ -77,7 +77,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $iva = new ivaCalculator();
+        $iva = new ivaConverter();
         $iva->setIvaInteger($category->iva);
         $category->iva = $iva->convertIvaIntoPercentage();
     
@@ -94,7 +94,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        $iva = new ivaCalculator();
+        $iva = new ivaConverter();
         $iva->setIvaInteger($category->iva);
         $category->iva = $iva->convertIvaIntoPercentage();
         return view('category.edit', [
@@ -117,7 +117,7 @@ class CategoryController extends Controller
             'iva' => 'numeric'
         ]);
     
-        $ivaPercent = new ivaCalculator();
+        $ivaPercent = new ivaConverter();
         $ivaPercent->setIvaPercent($validData['iva']);
         $ivaPercent= $ivaPercent->convertIvaIntoInteger();
     
@@ -145,7 +145,7 @@ class CategoryController extends Controller
     public function confirmDelete($id)
     {
         $category = Category::find($id);
-        $iva = new ivaCalculator();
+        $iva = new ivaConverter();
         $iva->setIvaInteger($category->iva);
         $category->iva = $iva->convertIvaIntoPercentage();
     
