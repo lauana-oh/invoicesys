@@ -17,7 +17,7 @@ class Invoice extends Model
      */
     public function client(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'client_id');
+        return $this->belongsTo(Company::class, 'client_id')->withDefault();
     }
     
     /**
@@ -26,7 +26,7 @@ class Invoice extends Model
      */
     public function vendor(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'vendor_id');
+        return $this->belongsTo(Company::class, 'vendor_id')->withDefault();
     }
     
     /**
@@ -42,6 +42,16 @@ class Invoice extends Model
         'created_at' => 'datetime:d-m-Y',
         'updated_at' => 'datetime:d-m-Y',
     ];
+    
+    /**
+     * Return relationship between invoice and status
+     * @return BelongsTo
+     */
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class, 'status_id');
+    }
+    
     /**
      * Return Id in #000000 format
      * @return string

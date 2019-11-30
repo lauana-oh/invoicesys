@@ -31,6 +31,7 @@ class InvoiceRequest extends FormRequest
             'due_date' => 'required | date | after_or_equal:delivery_date',
             'client' => 'required | exists:companies,name',
             'vendor' => 'required | exists:companies,name| different:client',
+            'status_id' => 'required'
         ];
     }
     
