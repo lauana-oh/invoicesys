@@ -20,6 +20,9 @@ class InvoiceController extends Controller
     public function index()
     {
         $invoices = Invoice::all();
+        foreach ($invoices as $invoice) {
+            $invoice->refreshStatus();
+        }
         return view('invoice.index', compact('invoices'));
     }
 
@@ -58,6 +61,7 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice)
     {
+        $invoice->refreshStatus();
         $orders = Order::where('invoice_id', $invoice->id)->get();
         return view('invoice.show', compact('invoice','orders'));
     }

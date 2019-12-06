@@ -2,13 +2,13 @@
 
 @section('content')
 @section('content')
-    <div class="container">
-        <div class="card w-75">
+    <div class="container col-lg-8 col-md-12">
+        <div class="card">
             <div class="card-header alert-dark">{{__('Showing details of')}} <strong>{{__('Invoice').$invoice->idFormatted}}</strong></div>
             <div class="card-body">
                 @include('invoice.partials.__details')
 
-                <div class="d-flex justify-content-around w-50">
+                <div class="container d-flex col-6 justify-content-around">
                     <a href="{{ route('invoices.index') }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> {{ __('Back') }}
                     </a>

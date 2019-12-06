@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="card w-75">
+    <div class="container col-lg-8 col-md-12">
+        <div class="card">
             <div class="card-header">{{__('Invoices')}}</div>
 
             <div class="card-body">

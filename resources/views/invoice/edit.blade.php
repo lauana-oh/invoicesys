@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="card w-75">
+<div class="container col-lg-8 col-md-12">
+    <div class="card">
         <div class="card-header">{{__('Editing invoice')}}{{$invoice->idFormatted}}</div>
 
         <div class="card-body">
@@ -11,7 +11,7 @@
                 @method('put')
                 @include('invoice.partials.__form')
             </form>
-            <div class="d-flex justify-content-around w-50">
+            <div class="container d-flex col-6 justify-content-around">
                 <a href="{{ route('invoices.index') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> {{ __('Cancel') }}
                 </a>

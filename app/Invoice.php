@@ -109,6 +109,12 @@ class Invoice extends Model
         return $totalIvaPaid;
     }
     
+    /**
+     * Return invoice data store or update after validation
+     * @param $request
+     * @param $invoice
+     * @return mixed
+     */
     public function storeInvoice($request, $invoice)
     {
         $companies = Company::all();
@@ -127,5 +133,27 @@ class Invoice extends Model
         $invoice->due_date =$request->due_date;
         
         return $invoice;
+    }
+    
+    public function refreshStatus()
+    {
+        $sent = Status::all()->keyBy('name')->get('sent')->id;
+        $overdue = Status::all()->keyBy('name')->get('overdue')->id;
+        $writeOff = Status::all()->keyBy('name')->get('write-off')->id;
+        
+        $daysToWriteOff = 360;
+        $dueDate = strtotime($this->due_date);
+        $today = strtotime(date('Y-m-d'));
+        $writeOffDate = strtotime($daysToWriteOff . ' day', $dueDate);;
+
+        if ($dueDate < $today && in_array($this->id,[$sent, $overdue, $writeOff])) {
+            if ($writeOffDate < $today) {
+                $this->status_id = $writeOff;
+            } else {
+                $this->status_id = $overdue;
+            }
+        }
+        
+        return $this->save();
     }
 }
