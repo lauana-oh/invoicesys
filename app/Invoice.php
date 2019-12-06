@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Traits\ColumnFillable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invoice extends Model
 {
     use ColumnFillable;
+    use SoftDeletes;
 
     /**
      * Return relationship between client and invoices
@@ -135,6 +137,10 @@ class Invoice extends Model
         return $invoice;
     }
     
+    /**
+     * Refresh status of invoice based on due date
+     * @return bool
+     */
     public function refreshStatus()
     {
         $sent = Status::all()->keyBy('name')->get('sent')->id;

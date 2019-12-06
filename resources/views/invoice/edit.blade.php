@@ -11,7 +11,7 @@
                 @method('put')
                 @include('invoice.partials.__form')
             </form>
-            <div class="container d-flex col-6 justify-content-around">
+            <div class="container d-flex col-lg-6 col-sm justify-content-around">
                 <a href="{{ route('invoices.index') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> {{ __('Cancel') }}
                 </a>

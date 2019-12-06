@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container col-lg-8 col-md-12">
+    <div class="container col-lg-7 col-md-12">
         <div class="card">
             <div class="card-header">{{__('Creating new invoice')}}</div>
 
@@ -10,7 +10,7 @@
                     @csrf
                     @include('invoice.partials.__form')
                 </form>
-                <div class="container d-flex col-6 justify-content-around">
+                <div class="container d-flex col-lg-6 col-sm justify-content-around">
                     <a href="{{ route('invoices.index') }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left"></i> {{ __('Cancel') }}
                     </a>

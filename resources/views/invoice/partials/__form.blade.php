@@ -3,16 +3,27 @@
         <label for="invoice_date">{{__('Invoice Date')}}:</label>
         <input type="date" name="invoice_date" id="invoice_date" class="form-control"
                value="{{old("invoice_date", $invoice->invoice_date)}}">
+        @error('invoice_date')
+            <div class="alert alert-danger small p-1 text-center">{{ $message }}</div>
+        @enderror
     </div>
+
     <div class="col-md-4">
         <label for="delivery_date">{{__('Delivery Date')}}:</label>
         <input type="date" name="delivery_date" id="delivery_date" class="form-control"
                value="{{old("delivery_date", $invoice->delivery_date)}}">
+        @error('delivery_date')
+        <div class="alert alert-danger small p-1 text-center">{{ $message }}</div>
+        @enderror
     </div>
+
     <div class="col-md-4">
         <label for="due_date">{{__('Due Date')}}:</label>
         <input type="date" name="due_date" id="due_date" class="form-control"
                value="{{old("due_date", $invoice->due_date)}}">
+        @error('due_date')
+        <div class="alert alert-danger small p-1 text-center">{{ $message }}</div>
+        @enderror
     </div>
 </div>
 
@@ -26,7 +37,11 @@
                 <option value="{{$client->name}}">NIT: {{$client->nit}}</option>
             @endforeach
         </datalist>
+        @error('client')
+        <div class="alert alert-danger small p-1 text-center">{{ $message }}</div>
+        @enderror
     </div>
+
     <div class="col-md-5">
         <label for="vendor">{{__('Vendor')}}:</label>
         <input list="vendors" name="vendor" id="vendor" class="form-control"
@@ -36,7 +51,11 @@
                 <option value="{{$vendor->name}}">NIT:{{$vendor->nit}}</option>
             @endforeach
         </datalist>
+        @error('vendor')
+        <div class="alert alert-danger small p-1 text-center">{{ $message }}</div>
+        @enderror
     </div>
+
     <div class="col-md-2">
         <label for="status_id">{{__('Status')}}:</label>
         <select class="form-control custom-select" name="status_id" id="status_id" required>
