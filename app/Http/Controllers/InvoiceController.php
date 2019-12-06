@@ -8,6 +8,7 @@ use App\Http\Requests\InvoiceRequest;
 use App\Http\Resources\Invoices;
 use App\Invoice;
 use App\Order;
+use App\Status;
 
 class InvoiceController extends Controller
 {
@@ -19,6 +20,9 @@ class InvoiceController extends Controller
     public function index()
     {
         $invoices = Invoice::all();
+        foreach ($invoices as $invoice) {
+            $invoice->refreshStatus();
+        }
         return view('invoice.index', compact('invoices'));
     }
 
@@ -30,8 +34,10 @@ class InvoiceController extends Controller
     public function create()
     {
         $companies = Company::all();
+        $statuses = Status::all();
         $invoice = new Invoice();
-        return view('invoice.create', compact('companies', 'invoice'));
+        $invoice->invoice_date = today()->format('Y-m-d');
+        return view('invoice.create', compact('companies', 'statuses', 'invoice'));
     }
     
     /**
@@ -55,6 +61,7 @@ class InvoiceController extends Controller
      */
     public function show(Invoice $invoice)
     {
+        $invoice->refreshStatus();
         $orders = Order::where('invoice_id', $invoice->id)->get();
         return view('invoice.show', compact('invoice','orders'));
     }
@@ -68,7 +75,8 @@ class InvoiceController extends Controller
     public function edit(Invoice $invoice)
     {
         $companies = Company::all();
-        return view('invoice.edit', compact('invoice','companies'));
+        $statuses = Status::all();
+        return view('invoice.edit', compact('invoice','companies', 'statuses'));
     }
 
     /**

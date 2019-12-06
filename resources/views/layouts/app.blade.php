@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
 <body>
     <div id="app">
@@ -32,8 +33,8 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        <li class="pl-5"><a href="/invoices">Invoices</a></li>
+                    <ul class="navbar-nav mr-auto pl-4">
+                        <li class="pl-4"><a href="/invoices">Invoices</a></li>
                         <li class="pl-4"><a href="/companies">Companies</a></li>
                         <li class="pl-4"><a href="/products">Products</a></li>
                         <li class="pl-4"><a href="/categories">Categories</a></li>
