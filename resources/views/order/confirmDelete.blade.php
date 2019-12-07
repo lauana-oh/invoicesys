@@ -1,47 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header alert-dark">Delete order?</div>
+    <div class="container col-lg-6 col-md-8">
+        <div class="card">
+            <div class="card-header alert-dark">
+                {{__('Delete')}}
+                <strong>{{__('Order').$order->idFormatted}} - {{$invoice->idFormatted}}?</strong>
+            </div>
+            <div class="card-body pl-5">
+                @include('order.partials.__details')
 
-                <div class="card-body">
-                    <div class="row">
-                        @if($errors->any())
-                            <div class="alert alert-dark">
-                                <ul>
-                                    @foreach($errors->all() as $error)
-                                        <li>{{$error}}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                    </div>
-                    <div class="row">
-                        <ul>
-                            <li><strong>ID:</strong> #{{$order->id}}</li>
-                            <li><strong>Invoice:</strong> #{{$order->invoice->id}}</li>
-                            <li><strong>Product:</strong> {{$order->product->name}}</li>
-                            <li><strong>Category:</strong> {{$order->product->category->name}}</li>
-                            <li><strong>Unit price:</strong> ${{$order->unit_price}}</li>
-                            <li><strong>Quantity:</strong> {{$order->quantity}}</li>
-                            <li><strong>Total price:</strong> ${{$order->unit_price}}</li>
-                            <li><strong>Iva:</strong> {{$order->product_iva}}%</li>
-                            <li><strong>Iva paid:</strong> ${{$order->productIva}}</li>
-                        </ul>
-                    </div>
-                    <div class="row ">
-                        <form action="/invoices/{{$invoice->id}}/orders/{{$order->id}}" method="post">
-                            @csrf
-                            @method('delete')
-                            <button class="btn btn-primary m-2 alert-danger" type="submit">Delete</button>
-                        </form>
-                        <a class="btn btn-secondary m-2" href="/invoices/{{$invoice->id}}">Back</a>
-                    </div>
+                <div class="container d-flex col-lg-6 col-sm justify-content-around">
+                    <a href="{{ route('invoices.show', $invoice) }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> {{ __('Back') }}
+                    </a>
+                    <form action="{{route('orders.destroy', compact('invoice','order'))}}" method="post">
+                        @csrf
+                        @method('delete')
+                        <button class="btn btn-danger" type="submit">
+                            <i class="fas fa-trash-alt"></i> {{ __('Confirm delete') }}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

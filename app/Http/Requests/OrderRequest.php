@@ -25,7 +25,7 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'quantity' => 'required | numeric',
+            'quantity' => 'required | numeric | min:0.01',
             'product' => 'required | exists:products,name'
         ];
     }

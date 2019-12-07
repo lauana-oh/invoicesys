@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Traits\ColumnFillable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static findOrFail($id)
+ */
 class Invoice extends Model
 {
     use ColumnFillable;
@@ -85,6 +88,27 @@ class Invoice extends Model
             $total += $order->totalPrice;
         }
         return $total;
+    }
+    
+    /**
+     * Return subtotal of invoice in money format
+     * @return string
+     */
+    public function getSubtotalFormattedAttribute()
+    {
+        setlocale(LC_MONETARY, 'es_CO.UTF-8');
+        return money_format(" %.2n", $this->subtotal);
+    }
+    
+    /**
+     * Return total of invoice in number format
+     * @return float
+     */
+    public function getSubtotalAttribute(): float
+    {
+        $total = $this->totalPaid;
+        $ivaPaid = $this->totalIvaPaid;
+        return $total-$ivaPaid;
     }
     
     /**
