@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static findOrFail($id)
+ * @method static create(array $invoiceData)
  */
 class Invoice extends Model
 {
