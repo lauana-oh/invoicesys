@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     /**
      * Display a listing of the resource.
      *
@@ -27,9 +22,7 @@ class CategoryController extends Controller
             $category->iva = $iva->convertIvaIntoPercentage();
         }
         
-        return view('category.index', [
-            'categories' => $categories
-        ]);
+        return response()->view('category.index',compact('categories'));
     }
 
     /**
@@ -39,14 +32,15 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category.create');
+        $category = new Category();
+        return response()->view('category.create', compact('category'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
@@ -66,7 +60,7 @@ class CategoryController extends Controller
         $category->iva = $ivaPercent;
         $category->save();
     
-        return redirect('/categories');
+        return redirect(route('categories.index'));
     }
 
     /**
@@ -81,9 +75,7 @@ class CategoryController extends Controller
         $iva->setIvaInteger($category->iva);
         $category->iva = $iva->convertIvaIntoPercentage();
     
-        return view('category.show', [
-            'category' => $category
-        ]);
+        return response()->view('category.show', compact('category'));
     }
 
     /**
@@ -97,9 +89,7 @@ class CategoryController extends Controller
         $iva = new ivaConverter();
         $iva->setIvaInteger($category->iva);
         $category->iva = $iva->convertIvaIntoPercentage();
-        return view('category.edit', [
-            'category' => $category
-        ]);
+        return response()->view('category.edit', compact('category'));
     }
 
     /**
@@ -107,7 +97,7 @@ class CategoryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(Request $request, Category $category)
     {
@@ -126,31 +116,36 @@ class CategoryController extends Controller
         $category->iva = $ivaPercent;
         $category->save();
     
-        return redirect('/categories');
+        return redirect(route('categories.index'));
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param \App\Category $category
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Exception
      */
     public function destroy(Category $category)
     {
         $category->delete();
         
-        return redirect('/categories');
+        return redirect(route('categories.index'));
     }
     
+    /**
+     * Show the form for confirm removal of specified resource.
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
     public function confirmDelete($id)
     {
-        $category = Category::find($id);
+        $category = Category::findOrFail($id);
         $iva = new ivaConverter();
         $iva->setIvaInteger($category->iva);
         $category->iva = $iva->convertIvaIntoPercentage();
     
-        return view('category.confirmDelete', [
-            'category' => $category
-        ]);
+        return response()->view('category.confirmDelete', compact('category'));
     }
 }

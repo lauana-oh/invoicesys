@@ -1,32 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col">Showing {{$category->name}} details</div>
-                    </div>
+    <div class="container col-lg-8 col-md-12">
+        <div class="card">
+            <div class="card-header">{{__('Showing category')}} {{$category->name}}</div>
+
+            <div class="card-body">
+
+                @include('category.partials.__details')
+
+                <div class="container d-flex col-lg-6 col-sm justify-content-around">
+                    <a href="{{ route('categories.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> {{ __('Back') }}
+                    </a>
+                    <a href="{{ route('categories.edit', $category) }}" class="btn btn-primary">
+                        <i class="fas fa-edit"></i> {{ __('Edit') }}
+                    </a>
+                    <a href="{{ route('categories.confirmDelete', $category) }}" class="btn btn-danger">
+                        <i class="fas fa-trash-alt"></i> {{ __('Delete') }}
+                    </a>
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <ul>
-                            <li><strong>ID:</strong> {{$category->id}}</li>
-                            <li><strong>Category:</strong> {{$category->name}}</li>
-                            <li><strong>Description:</strong> {{$category->description}}</li>
-                            <li><strong>Iva:</strong> {{$category->iva}}%</li>
-                        </ul>
-                    </div>
-                    <div class="row m-1">
-                        <a class="btn btn-primary m-2" href="/categories/{{$category->id}}/edit">Edit</a>
-                        <a class="btn btn-primary m-2" href="/categories/{{$category->id}}/confirmDelete">Delete</a>
-                        <a class="btn btn-secondary m-2" href="/categories/">Back</a>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
-</div>
+
 @endsection

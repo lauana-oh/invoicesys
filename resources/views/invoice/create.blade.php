@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container col-lg-7 col-md-12">
+    <div class="container col-lg-8 col-md-12">
         <div class="card">
             <div class="card-header">{{__('Creating new invoice')}}</div>
 
             <div class="card-body">
 
-                <form action="{{route('invoices.store', $invoice->id)}}" method="post" class="form-group" id="invoices-form">
+                <form action="{{route('invoices.store', $invoice)}}" method="post" class="form-group" id="invoices-form">
                     @csrf
                     @include('invoice.partials.__form')
                 </form>

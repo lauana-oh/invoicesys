@@ -8,7 +8,7 @@
                     <h4>{{__('Invoices')}}</h4>
                 </div>
                 <div class="col-lg-3 col-sm-auto align-self-auto">
-                    <a class="btn btn-primary" href="{{route('invoices.create')}}">Add a new invoice</a>
+                    <a class="btn btn-primary" href="{{route('invoices.create')}}">{{__('Add a new invoice')}}</a>
                 </div>
             </div>
 
