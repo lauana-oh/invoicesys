@@ -4,159 +4,113 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Http\Helpers\ivaConverter;
+use App\Http\Requests\ProductRequest;
 use App\Product;
+use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        return view('product.index', [
-            'products' => Product::all()
-        ]);
+        $products = Product::all();
+        return response()->view('product.index', compact('products'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
-        return view('product.create', [
-            'categories' => Category::all()
-        ]);
+        $product = new Product();
+        $categories = Category::all();
+        return response()->view('product.create',compact('product', 'categories'));
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param ProductRequest $request
+     * @return RedirectResponse|Redirector
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $validData = $request->validate([
-            'name' => 'required | min:3',
-            'description' => 'required | min:8',
-            'unit_price' => 'required | numeric',
-            'stock' => 'numeric',
-            'category' => 'required',
-        ]);
-        
-        $categories = Category::all();
-        $categories = $categories->keyBy('name');
-        
-        $categoryName= $validData['category'];
-        $category= $categories->get($categoryName);
-        
-        $product = new Product();
-        $product->name = $validData['name'];
-        $product->description = $validData['description'];
-        $product->unit_price = $validData['unit_price'];
-        $product->stock = $validData['stock'];
-        $product->category_id = $category->id;
-        $product->save();
+        Product::create($request->productData());
     
-        return redirect('/products');
+        return redirect(route('products.index'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return Response
      */
     public function show(Product $product)
     {
-        $iva = new ivaConverter();
-        $iva->setIvaInteger($product->category->iva);
-        $product->category->iva = $iva->convertIvaIntoPercentage();
-        
-        return view('product.show', [
-            'product' => $product
-        ]);
+        return response()->view('product.show', compact('product'));
     }
     
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return Response
      */
     public function edit(Product $product)
     {
-        return view('product.edit', [
-            'product' => $product,
-            'categories' => Category::all(),
-        ]);
+        $categories = Category::all();
+        return response()->view('product.edit', compact('product','categories'));
     }
-
+    
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param ProductRequest $request
+     * @param Product $product
+     * @return RedirectResponse|Redirector
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        $validData = $request->validate([
-            'name' => 'required | min:3',
-            'description' => 'required | min:8',
-            'unit_price' => 'required | numeric',
-            'stock' => 'numeric',
-            'category' => 'required',
-        ]);
+        $product->update($request->productData());
     
-        $categories = Category::all();
-        $categories = $categories->keyBy('name');
-    
-        $categoryName= $validData['category'];
-        $category= $categories->get($categoryName);
-    
-        $product->name = $validData['name'];
-        $product->description = $validData['description'];
-        $product->unit_price = $validData['unit_price'];
-        $product->stock = $validData['stock'];
-        $product->category_id = $category->id;
-        $product->save();
-    
-        return redirect('/products');
+        return redirect(route('products.index'));
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return RedirectResponse|Redirector
+     * @throws Exception
      */
     public function destroy(Product $product)
     {
         $product->delete();
         
-        return redirect('/products');
+        return redirect(route('products.index'));
     }
     
-    public function confirmDelete($id){
-        $product = Product::find($id);
+    /**
+     * Show the form for confirm removal of specified resource.
+     *
+     * @param $id
+     * @return Response
+     */
+    public function confirmDelete($id)
+    {
+        $product = Product::findOrFail($id);
         
-        $iva = new ivaConverter();
-        $iva->setIvaInteger($product->category->iva);
-        $product->category->iva = $iva->convertIvaIntoPercentage();
-        
-        return view('product.confirmDelete', [
-            'product' => $product
-        ]);
+        return response()->view('product.confirmDelete', compact('product'));
     }
 }

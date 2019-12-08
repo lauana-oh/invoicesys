@@ -1,42 +1,32 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Products</div>
+    <div class="container col-lg-8 col-md-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-end">
+                <div class="col-lg-3 col-sm-auto">
+                    <h4>{{__('Products')}}</h4>
+                </div>
+                <div class="col-lg-3 col-sm-auto align-self-auto">
+                    <a class="btn btn-primary" href="{{route('products.create')}}">{{__('Add a new product')}}</a>
+                </div>
+            </div>
 
-                <div class="card-body">
-                    <div class="row">
-                        <a class="btn btn-primary mb-4 ml-2" href="/products/create">Add a new product</a>
-                    </div>
-                    <div class="row">
-                        <table class="table">
-                            <tr>
-                                <th class="text-center">ID</th>
-                                <th class="w-25">Product</th>
-                                <th class="text-center">Unit Price</th>
-                                <th class="text-center">Quantity in stock</th>
-                                <th class="text-center">Category</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            @foreach($products as $product)
-                                <tr>
-                                    <td class="text-center">{{$product->id}}</td>
-                                    <td><a href="/products/{{$product->id}}">{{$product->name}}</a></td>
-                                    <td class="text-center">$ {{$product->unit_price}}</td>
-                                    <td class="text-center">{{$product->stock}} </td>
-                                    <td class="text-center">{{$product->category->name}}</td>
-                                    <td class="text-center"><a href="/products/{{$product->id}}/edit">Edit</a></td>
-                                    <td class="text-center"><a href="/products/{{$product->id}}/confirmDelete">Delete</a> </td>
-                                </tr>
-                            @endforeach
-                        </table>
-                    </div>
+            <div class="card-body justify-content-center">
+                <table class="table">
+                    <tr class="row">
+                        <th class=" col text-center">{{__('ID')}}</th>
+                        <th class="col-3">{{__('Product')}}</th>
+                        <th class=" col-2 text-center">{{__('Unit Price')}}</th>
+                        <th class="col-2 text-center">{{__('Quantity in stock')}}</th>
+                        <th class="col-2 text-center">{{__('Category')}}</th>
+                        <th class="col"></th>
+                    </tr>
+                    @foreach($products as $product)
+                        @include('product.partials.__row')
+                    @endforeach
+                </table>
             </div>
         </div>
     </div>
-</div>
 @endsection

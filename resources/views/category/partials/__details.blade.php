@@ -3,6 +3,6 @@
         <li><strong>ID:</strong> {{$category->id}}</li>
         <li><strong>Category:</strong> {{$category->name}}</li>
         <li><strong>Description:</strong> {{$category->description}}</li>
-        <li><strong>Iva:</strong> {{$category->iva}}%</li>
+        <li><strong>Iva:</strong> {{$category->ivaFormatted}}</li>
     </ul>
 </div>

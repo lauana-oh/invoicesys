@@ -17,13 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $iva = new ivaConverter();
         $categories = Category::all();
-        foreach ($categories as $category){
-            $iva->setIvaInteger($category->iva);
-            $category->iva = $iva->convertIvaIntoPercentage();
-        }
-        
         return response()->view('category.index',compact('categories'));
     }
 
@@ -60,8 +54,6 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         $iva = new ivaConverter();
-        $iva->setIvaInteger($category->iva);
-        $category->iva = $iva->convertIvaIntoPercentage();
     
         return response()->view('category.show', compact('category'));
     }

@@ -14,12 +14,12 @@
 
             <div class="card-body container">
                 <table class="table">
-                    <tr class="row w-75">
-                        <th class="col text-center">{{__('ID')}}</th>
+                    <tr class="row">
+                        <th class="col-1 text-center">{{__('ID')}}</th>
                         <th class="col-2">{{__('Category')}}</th>
                         <th class="col-5">{{__('Description')}}</th>
-                        <th class="col text-center">{{__('IVA')}}</th>
-                        <th class="col"></th>
+                        <th class="col-2 text-center">{{__('IVA')}}</th>
+                        <th class="col-1"></th>
                     </tr>
                     @foreach($categories as $category)
                         @include('category.partials.__row')

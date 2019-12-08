@@ -20,7 +20,7 @@ class Order extends Model
      */
     public function  invoice(): BelongsTo
     {
-        return $this->belongsTo(Invoice::class, 'invoice_id')->withDefault();
+        return $this->belongsTo(Invoice::class, 'invoice_id')->withTrashed()->withDefault();
     }
     
     /**
@@ -29,7 +29,7 @@ class Order extends Model
      */
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'product_id')->withDefault();
+        return $this->belongsTo(Product::class, 'product_id')->withTrashed()->withDefault();
     }
     
     /**

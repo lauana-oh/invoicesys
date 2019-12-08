@@ -47,7 +47,8 @@ class InvoiceRequest extends FormRequest
      * Return validated data with client and vendor in ID form to store
      * @return array
      */
-    public function invoiceData(){
+    public function invoiceData()
+    {
         $data = $this->validated();
         
         $client_id = Company::all()->keyBy('name')->get($this->validated()['client'])->id;

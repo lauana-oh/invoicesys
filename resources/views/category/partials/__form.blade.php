@@ -1,13 +1,13 @@
 <div class="row">
     <div class="form-group col">
-        <div class="">
+        <div class=" mb-3">
             <label for="name">{{__('Category name')}}:</label>
-            <input type="text" class="form-control mb-3" id="name" name="name"
+            <input type="text" class="form-control" id="name" name="name"
                    placeholder="Type a new category" value="{{old("name",$category->name)}}">
             @error('name')<div class="alert alert-danger small p-1 text-center">{{ $message }}</div>@enderror
         </div>
 
-        <div class="">
+        <div>
             <label for="iva">{{__('IVA')}}:</label>
             <div class="input-group">
                 <input type="number" class="form-control" id="iva" value="{{old("iva",$category->iva)}}"
