@@ -22,6 +22,7 @@ class CreateInvoicesTable extends Migration
             $table->date('due_date');
             $table->unsignedBigInteger('status_id');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('client_id')->references('id')->on('companies');
             $table->foreign('vendor_id')->references('id')->on('companies');
             $table->foreign('status_id')->references('id')->on('statuses');

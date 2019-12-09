@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Helpers\ivaConverter;
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\OrderVRequest;
 use App\Invoice;
 use App\Order;
 use App\Product;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     /**
      * Show the form for creating a new resource.
      *
@@ -23,22 +20,22 @@ class OrderController extends Controller
      */
     public function create(Invoice $invoice)
     {
-        $products = Product::all();
+        $products= Product::all()->withCategoryAvailable() ;
         $order = new Order();
-        return view('order.create', compact('invoice', 'products', 'order'));
+        return response()->view('order.create', compact('invoice', 'products', 'order'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(OrderRequest $request, Invoice $invoice)
     {
         Order::create($request->orderStoreData($invoice));
         
-        return redirect('/invoices/'.$invoice->id);
+        return redirect()->route('invoices.show', $invoice->id);
     }
 
     /**
@@ -49,25 +46,19 @@ class OrderController extends Controller
      */
     public function show(Invoice $invoice, Order $order)
     {
-        return view('order.show',[
-            'invoice' => $invoice,
-            'order' => $order,
-        ]);
+        return response()->view('order.show', compact('invoice', 'order'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Order  $order
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
     public function edit(Invoice $invoice,Order $order)
     {
-        return view('order.edit',[
-            'invoice' => $invoice,
-            'order' => $order,
-            'products' => Product::all(),
-        ]);
+        $products = Product::all()->withCategoryAvailable();
+        return response()->view('order.edit', compact('invoice', 'order', 'products'));
     }
 
     /**
@@ -75,37 +66,42 @@ class OrderController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(OrderRequest $request, Invoice $invoice, Order $order)
     {
         $order->update($request->orderUpdateData($invoice));
     
-        return redirect('/invoices/'.$invoice->id);
+        return redirect()->route('invoices.show', $invoice->id);
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
+     * @param \App\Order $order
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy(Invoice $invoice, Order $order)
     {
         $order->delete();
         
-        return redirect('/invoices/'.$invoice->id);
+        return redirect()->route('invoices.show', $invoice->id);
     }
     
+    /**
+     * Display a confirmation to remove the specified resource from storage.
+     *
+     * @param Invoice $invoice
+     * @param Order $order
+     * @return \Illuminate\Http\Response
+     */
     public function confirmDelete(Invoice $invoice, Order $order)
     {
         $iva = new ivaConverter();
         $iva->setIvaInteger($order->productIva);
         $order->productIva = $iva->convertIvaIntoPercentage();
         
-        return view('order.confirmDelete',[
-            'invoice' => $invoice,
-            'order' => $order,
-        ]);
+        return response()->view('order.confirmDelete',compact('invoice', 'order'));
     }
 }

@@ -4,15 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Http\Helpers\ivaConverter;
-use Illuminate\Http\Request;
+use App\Http\Requests\CategoryRequest;
+use Illuminate\Http\RedirectResponse;
 
 class CategoryController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     /**
      * Display a listing of the resource.
      *
@@ -20,16 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $iva = new ivaConverter();
         $categories = Category::all();
-        foreach ($categories as $category){
-            $iva->setIvaInteger($category->iva);
-            $category->iva = $iva->convertIvaIntoPercentage();
-        }
-        
-        return view('category.index', [
-            'categories' => $categories
-        ]);
+        return response()->view('category.index',compact('categories'));
     }
 
     /**
@@ -39,34 +27,21 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category.create');
+        $category = new Category();
+        return response()->view('category.create', compact('category'));
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CategoryRequest $request
+     * @return RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $validData = $request->validate([
-            'name' => 'unique:categories,name| required | min:3',
-            'description' => 'required | min: 5',
-            'iva' => 'numeric'
-        ]);
-
-        $ivaPercent = new ivaConverter();
-        $ivaPercent->setIvaPercent($validData['iva']);
-        $ivaPercent= $ivaPercent->convertIvaIntoInteger();
-
-        $category = new Category();
-        $category->name = $validData['name'];
-        $category->description = $validData['description'];
-        $category->iva = $ivaPercent;
-        $category->save();
+        Category::create($request->categoryData());
     
-        return redirect('/categories');
+        return redirect(route('categories.index'));
     }
 
     /**
@@ -78,12 +53,8 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         $iva = new ivaConverter();
-        $iva->setIvaInteger($category->iva);
-        $category->iva = $iva->convertIvaIntoPercentage();
     
-        return view('category.show', [
-            'category' => $category
-        ]);
+        return response()->view('category.show', compact('category'));
     }
 
     /**
@@ -97,60 +68,47 @@ class CategoryController extends Controller
         $iva = new ivaConverter();
         $iva->setIvaInteger($category->iva);
         $category->iva = $iva->convertIvaIntoPercentage();
-        return view('category.edit', [
-            'category' => $category
-        ]);
+        return response()->view('category.edit', compact('category'));
     }
-
+    
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param CategoryRequest $request
+     * @param \App\Category $category
+     * @return RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
-        $validData = $request->validate([
-            'name' => 'required | min:3',
-            'description' => 'required | min: 5',
-            'iva' => 'numeric'
-        ]);
+        $category->update($request->categoryData());
     
-        $ivaPercent = new ivaConverter();
-        $ivaPercent->setIvaPercent($validData['iva']);
-        $ivaPercent= $ivaPercent->convertIvaIntoInteger();
-    
-        $category->name = $validData['name'];
-        $category->description = $validData['description'];
-        $category->iva = $ivaPercent;
-        $category->save();
-    
-        return redirect('/categories');
+        return redirect(route('categories.index'));
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param \App\Category $category
+     * @return RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Exception
      */
     public function destroy(Category $category)
     {
         $category->delete();
         
-        return redirect('/categories');
+        return redirect(route('categories.index'));
     }
     
+    /**
+     * Show the form for confirm removal of specified resource.
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
     public function confirmDelete($id)
     {
-        $category = Category::find($id);
-        $iva = new ivaConverter();
-        $iva->setIvaInteger($category->iva);
-        $category->iva = $iva->convertIvaIntoPercentage();
+        $category = Category::findOrFail($id);
     
-        return view('category.confirmDelete', [
-            'category' => $category
-        ]);
+        return response()->view('category.confirmDelete', compact('category'));
     }
 }

@@ -7,6 +7,10 @@ use App\Traits\ColumnFillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @method static where(string $string, $id)
+ * @method static create(array $orderStoreData)
+ */
 class Order extends Model
 {
     use ColumnFillable;
@@ -16,7 +20,7 @@ class Order extends Model
      */
     public function  invoice(): BelongsTo
     {
-        return $this->belongsTo(Invoice::class, 'invoice_id');
+        return $this->belongsTo(Invoice::class, 'invoice_id')->withTrashed()->withDefault();
     }
     
     /**
@@ -25,7 +29,7 @@ class Order extends Model
      */
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->belongsTo(Product::class, 'product_id')->withTrashed()->withDefault();
     }
     
     /**

@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('welcome');
 });
 
 /*------Authentication's Routes----*/
@@ -22,17 +22,17 @@ Route::get('/home', 'HomeController@index')->name('home');
 /*------Products' Routes-----------*/
 Route::resource('/products','ProductController');
 
-Route::get('/products/{id}/confirmDelete','ProductController@confirmDelete');
+Route::get('/products/{id}/confirmDelete','ProductController@confirmDelete')->name('products.confirmDelete');
 
 /*------Companies' Routes-----------*/
 Route::resource('/companies','CompanyController');
 
-Route::get('/companies/{id}/confirmDelete','CompanyController@confirmDelete');
+Route::get('/companies/{id}/confirmDelete','CompanyController@confirmDelete')->name('companies.confirmDelete');
 
 /*------Categories' Routes-----------*/
 Route::resource('/categories','CategoryController');
 
-Route::get('/categories/{id}/confirmDelete','CategoryController@confirmDelete');
+Route::get('/categories/{id}/confirmDelete','CategoryController@confirmDelete')->name('categories.confirmDelete');
 
 /*------Invoices' Routes-----------*/
 Route::resource('/invoices','InvoiceController');

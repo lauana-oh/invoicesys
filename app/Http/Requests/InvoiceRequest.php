@@ -27,7 +27,7 @@ class InvoiceRequest extends FormRequest
     {
         return [
             'invoice_date' => 'required | date',
-            'delivery_date' => 'nullable | date | after_or_equal:invoice_date',
+            'delivery_date' => 'required_unless:status_id,1 | date | after_or_equal:invoice_date',
             'due_date' => 'required | date | after_or_equal:delivery_date',
             'client' => 'required | exists:companies,name',
             'vendor' => 'required | exists:companies,name| different:client',
@@ -35,7 +35,20 @@ class InvoiceRequest extends FormRequest
         ];
     }
     
-    public function invoiceData(){
+    public function messages()
+    {
+        
+        return [
+            'delivery_date.required_unless' => 'The delivery date field is required unless status is draft.',
+        ];
+    }
+    
+    /**
+     * Return validated data with client and vendor in ID form to store
+     * @return array
+     */
+    public function invoiceData()
+    {
         $data = $this->validated();
         
         $client_id = Company::all()->keyBy('name')->get($this->validated()['client'])->id;

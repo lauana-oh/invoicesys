@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('description');
             $table->unsignedDecimal('iva');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

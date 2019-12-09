@@ -34,10 +34,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto pl-4">
-                        <li class="pl-4"><a href="/invoices">Invoices</a></li>
-                        <li class="pl-4"><a href="/companies">Companies</a></li>
-                        <li class="pl-4"><a href="/products">Products</a></li>
-                        <li class="pl-4"><a href="/categories">Categories</a></li>
+                        <li class="pl-lg-4"><a href="{{route('invoices.index')}}">Invoices</a></li>
+                        <li class="pl-lg-4"><a href="{{route('companies.index')}}">Companies</a></li>
+                        <li class="pl-lg-4"><a href="{{route('products.index')}}">Products</a></li>
+                        <li class="pl-lg-4"><a href="{{route('categories.index')}}">Categories</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

@@ -1,47 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header alert-dark">
-                    <div class="row">
-                        <div class="col">Delete {{$category->name}}?</div>
-                    </div>
-                </div>
+    <div class="container col-lg-8 col-md-12">
+        <div class="card">
+            <div class="card-header alert-dark">{{__('Delete category')}} <strong>{{$category->name}}?</strong></div>
+            <div class="card-body">
+                @include('category.partials.__details')
 
-                <div class="card-body">
-                    <div class="row">
-                        @if($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach($errors->all() as $error)
-                                        <li>{{$error}}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                    </div>
-                    <div class="row">
-                        <ul>
-                            <li><strong>ID:</strong> {{$category->id}}</li>
-                            <li><strong>Category:</strong> {{$category->name}}</li>
-                            <li><strong>Description:</strong> {{$category->description}}</li>
-                            <li><strong>Iva:</strong> {{$category->iva}}%</li>
-                        </ul>
-                    </div>
-                    <div class="row ">
-                        <form action="/categories/{{$category->id}}" method="post">
-                            @csrf
-                            @method('delete')
-                            <button class="btn btn-primary m-2 alert-danger" type="submit">Delete</button>
-                        </form>
-                        <a class="btn btn-secondary m-2" href="/categories/">Back</a>
-                    </div>
+                <div class="container d-flex col-lg-6 col-sm justify-content-around">
+                    <a href="{{ route('categories.index')}}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> {{ __('Back') }}
+                    </a>
+
+                    <form action="{{route('categories.destroy', $category)}}" method="post">
+                        @csrf
+                        @method('delete')
+                        <button class="btn btn-danger" type="submit">
+                            <i class="fas fa-trash-alt"></i> {{ __('Confirm delete') }}
+                        </button>
+                    </form>
+
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

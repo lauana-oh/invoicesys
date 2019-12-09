@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Traits\ColumnFillable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static findOrFail($id)
+ * @method static create(array $invoiceData)
+ */
 class Invoice extends Model
 {
     use ColumnFillable;
+    use SoftDeletes;
 
     /**
      * Return relationship between client and invoices
@@ -17,7 +23,7 @@ class Invoice extends Model
      */
     public function client(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'client_id')->withDefault();
+        return $this->belongsTo(Company::class, 'client_id')->withTrashed()->withDefault();
     }
     
     /**
@@ -26,7 +32,7 @@ class Invoice extends Model
      */
     public function vendor(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'vendor_id')->withDefault();
+        return $this->belongsTo(Company::class, 'vendor_id')->withTrashed()->withDefault();
     }
     
     /**
@@ -86,6 +92,27 @@ class Invoice extends Model
     }
     
     /**
+     * Return subtotal of invoice in money format
+     * @return string
+     */
+    public function getSubtotalFormattedAttribute()
+    {
+        setlocale(LC_MONETARY, 'es_CO.UTF-8');
+        return money_format(" %.2n", $this->subtotal);
+    }
+    
+    /**
+     * Return total of invoice in number format
+     * @return float
+     */
+    public function getSubtotalAttribute(): float
+    {
+        $total = $this->totalPaid;
+        $ivaPaid = $this->totalIvaPaid;
+        return $total-$ivaPaid;
+    }
+    
+    /**
      * Return total IVA of invoice in money format
      * @return string
      */
@@ -135,6 +162,10 @@ class Invoice extends Model
         return $invoice;
     }
     
+    /**
+     * Refresh status of invoice based on due date
+     * @return bool
+     */
     public function refreshStatus()
     {
         $sent = Status::all()->keyBy('name')->get('sent')->id;

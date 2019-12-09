@@ -21,6 +21,7 @@ class CreateCompaniesTable extends Migration
             $table->unsignedBigInteger('phone')->nullable();
             $table->string('address')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

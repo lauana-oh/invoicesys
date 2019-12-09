@@ -3,15 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Company;
-use Illuminate\Http\Request;
+use App\Http\Requests\CompanyRequest ;
 
 class CompanyController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     /**
      * Display a listing of the resource.
      *
@@ -19,9 +14,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return view('company.index', [
-            'companies' => Company::all()
-        ]);
+        $companies = Company::all();
+        return response()->view('company.index', compact('companies'));
     }
 
     /**
@@ -31,34 +25,21 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('company.create');
+        $company = new Company();
+        return response()->view('company.create', compact('company'));
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CompanyRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
-        $validData = $request->validate([
-            'name' => 'required | min:3',
-            'nit' => 'required | numeric | min:5',
-            'email' => 'email',
-            'phone' => 'min:7',
-            'address' => 'max:255',
-        ]);
+        Company::create($request->validated());
     
-        $company = new Company();
-        $company->name = $validData['name'];
-        $company->nit = $validData['nit'];
-        $company->email = $validData['email'];
-        $company->phone = $validData['phone'];
-        $company->address = $validData['address'];
-        $company->save();
-    
-        return redirect('/companies');
+        return redirect(route('companies.index'));
     }
 
     /**
@@ -69,9 +50,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        return view('company.show', [
-            'company' => $company
-        ]);
+        return response()->view('company.show', compact('company'));
     }
 
     /**
@@ -82,9 +61,7 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        return view('company.edit', [
-            'company' => $company
-        ]);
+        return response()->view('company.edit', compact('company'));
     }
 
     /**
@@ -92,44 +69,36 @@ class CompanyController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Company  $company
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, Company $company)
+    public function update(CompanyRequest $request, Company $company)
     {
-        $validData = $request->validate([
-            'name' => 'required | min:3',
-            'nit' => 'required | numeric | min:5 | max:11',
-            'email' => 'email',
-            'phone' => 'min:7 | max:11',
-            'address' => 'max:255',
-        ]);
+        $company->update($request->validated());
     
-        $company->name = $validData['name'];
-        $company->nit = (int)$validData['nit'];
-        $company->email = $validData['email'];
-        $company->phone = (int)$validData['phone'];
-        $company->address = $validData['address'];
-        $company->save();
-    
-        return redirect('/companies');
+        return redirect(route('companies.index'));
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Company  $company
-     * @return \Illuminate\Http\Response
+     * @param \App\Company $company
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Exception
      */
     public function destroy(Company $company)
     {
         $company->delete();
-        return redirect('/companies');
+        return redirect(route('companies.index'));
     }
-
+    
+    /**
+     * Show the form for confirm removal of specified resource.
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
     public function confirmDelete($id){
-        $company = Company::find($id);
-        return view('company.confirmDelete', [
-            'company' => $company
-        ]);
+        $company = Company::findOrFail($id);
+        return response()->view('company.confirmDelete', compact('company'));
     }
 }

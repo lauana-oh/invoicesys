@@ -1,34 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header alert-dark">Showing order {{$order->id}} details</div>
+    <div class="container col-lg-6 col-md-8">
+        <div class="card">
+            <div class="card-header alert-dark">
+                {{__('Showing details of')}}
+                <strong>{{__('Order').$order->idFormatted}} - {{$invoice->idFormatted}}</strong>
+            </div>
 
-                <div class="card-body">
+            <div class="card-body">
+                @include('order.partials.__details')
 
-                    <div class="row">
-                        <ul>
-                            <li><strong>Order:</strong>{{$order->idFormatted}}</li>
-                            <li><strong>Invoice:</strong>{{$order->invoice->idFormatted}}</li>
-                            <li><strong>Product:</strong> {{$order->product->name}}</li>
-                            <li><strong>Category:</strong> {{$order->product->category->name}}</li>
-                            <li><strong>Unit price:</strong>{{$order->unitPriceFormatted}}</li>
-                            <li><strong>Quantity:</strong> {{$order->quantityFormatted}}</li>
-                            <li><strong>Total price:</strong>{{$order->totalPriceFormatted}}</li>
-                            <li><strong>Iva:</strong> {{$order->productIvaFormatted}}</li>
-                            <li><strong>Iva paid:</strong> {{$order->productIvaPaidFormatted}}</li>
-                        </ul>
-                    </div>
-                    <div class="row ">
-                        <a class="btn btn-primary m-2" href="{{route("orders.edit", [$invoice->id, $order->id])}}">Edit</a>
-                        <a class="btn btn-primary m-2" href="{{route("orders.confirmDelete", [$invoice->id, $order->id])}}">Delete</a>
-                        <a class="btn btn-secondary m-2" href="{{route("invoices.show",$invoice->id)}}">Back</a>
-                    </div>
+                <div class="container d-flex col-lg-6 col-sm justify-content-around">
+                    <a href="{{ route('invoices.show', $invoice) }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> {{ __('Back') }}
+                    </a>
+                    <a href="{{ route('orders.edit', compact('invoice', 'order')) }}" class="btn btn-primary">
+                        <i class="fas fa-edit"></i> {{ __('Edit') }}
+                    </a>
+                    <a href="{{ route('orders.confirmDelete', compact('invoice','order')) }}" class="btn btn-danger">
+                        <i class="fas fa-trash-alt"></i> {{ __('Delete') }}
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
-</div>
 @endsection
