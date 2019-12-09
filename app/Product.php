@@ -4,6 +4,7 @@ namespace App;
 
 use App\Traits\ColumnFillable;
 use App\Traits\SaveToUcFirst;
+use App\Support\ProductCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -63,4 +64,14 @@ class Product extends Model
         return str_replace(",00", "", number_format($this->stock, 2,",","."));
     }
     
+    /**
+     * Create a new Eloquent Collection instance.
+     *
+     * @param array $models
+     * @return ProductCollection
+     */
+    public function newCollection(array $models = [])
+    {
+        return new ProductCollection($models);
+    }
 }

@@ -6,7 +6,6 @@ use App\Category;
 use App\Http\Helpers\ivaConverter;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {

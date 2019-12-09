@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Helpers\ivaConverter;
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\OrderVRequest;
 use App\Invoice;
 use App\Order;
 use App\Product;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderController extends Controller
 {
@@ -18,7 +20,7 @@ class OrderController extends Controller
      */
     public function create(Invoice $invoice)
     {
-        $products = Product::all();
+        $products= Product::all()->withCategoryAvailable() ;
         $order = new Order();
         return response()->view('order.create', compact('invoice', 'products', 'order'));
     }
@@ -31,6 +33,7 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request, Invoice $invoice)
     {
+        dd($request);
         Order::create($request->orderStoreData($invoice));
         
         return redirect()->route('invoices.show', $invoice->id);
@@ -55,7 +58,7 @@ class OrderController extends Controller
      */
     public function edit(Invoice $invoice,Order $order)
     {
-        $products = Product::all();
+        $products = Product::all()->withCategoryAvailable();
         return response()->view('order.edit', compact('invoice', 'order', 'products'));
     }
 

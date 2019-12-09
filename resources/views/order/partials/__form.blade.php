@@ -22,3 +22,6 @@
         @enderror
     </div>
 </div>
+
+<input type="hidden" id="invoice_id" name="invoice_id" value="{{$invoice->id}}">
+
