@@ -7,11 +7,6 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-    
     /**
      * Display a listing of the resource.
      *
@@ -19,9 +14,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return view('company.index', [
-            'companies' => Company::all()
-        ]);
+        $companies = Company::all();
+        return response()->view('company.index', compact('companies'));
     }
 
     /**
@@ -31,7 +25,8 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('company.create');
+        $company = new Company();
+        return response()->view('company.create', compact('company'));
     }
 
     /**
@@ -58,7 +53,7 @@ class CompanyController extends Controller
         $company->address = $validData['address'];
         $company->save();
     
-        return redirect('/companies');
+        return redirect(route('companies.index'));
     }
 
     /**
@@ -69,9 +64,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        return view('company.show', [
-            'company' => $company
-        ]);
+        return response()->view('company.show', compact('company'));
     }
 
     /**
@@ -82,9 +75,7 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        return view('company.edit', [
-            'company' => $company
-        ]);
+        return response()->view('company.edit', compact('company'));
     }
 
     /**
@@ -111,7 +102,7 @@ class CompanyController extends Controller
         $company->address = $validData['address'];
         $company->save();
     
-        return redirect('/companies');
+        return redirect(route('companies.index'));
     }
 
     /**
@@ -123,11 +114,11 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         $company->delete();
-        return redirect('/companies');
+        return redirect('companies.index');
     }
 
     public function confirmDelete($id){
-        $company = Company::find($id);
+        $company = Company::findOrFail($id);
         return view('company.confirmDelete', [
             'company' => $company
         ]);
