@@ -33,7 +33,6 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request, Invoice $invoice)
     {
-        dd($request);
         Order::create($request->orderStoreData($invoice));
         
         return redirect()->route('invoices.show', $invoice->id);

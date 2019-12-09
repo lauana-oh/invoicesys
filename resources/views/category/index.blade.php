@@ -7,7 +7,7 @@
                 <div class="col-lg-3 col-sm-auto">
                     <h4>{{__('Categories')}}</h4>
                 </div>
-                <div class="col-lg-4 col-sm-auto align-self-auto">
+                <div class="col-lg-3 col-sm-auto align-self-auto">
                     <a class="btn btn-primary" href="{{route('categories.create')}}">{{__('Add a new category')}}</a>
                 </div>
             </div>
@@ -15,11 +15,11 @@
             <div class="card-body container">
                 <table class="table">
                     <tr class="row">
-                        <th class="col-1 text-center">{{__('ID')}}</th>
-                        <th class="col-2">{{__('Category')}}</th>
-                        <th class="col-5">{{__('Description')}}</th>
-                        <th class="col-2 text-center">{{__('IVA')}}</th>
-                        <th class="col-1"></th>
+                        <th class="col col-1 text-center">{{__('ID')}}</th>
+                        <th class="col">{{__('Category')}}</th>
+                        <th class="col-6">{{__('Description')}}</th>
+                        <th class="col text-center">{{__('IVA')}}</th>
+                        <th class="col" ></th>
                     </tr>
                     @foreach($categories as $category)
                         @include('category.partials.__row')

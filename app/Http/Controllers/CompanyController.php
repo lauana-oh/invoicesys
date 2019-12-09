@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Company;
-use Illuminate\Http\Request;
+use App\Http\Requests\CompanyRequest ;
 
 class CompanyController extends Controller
 {
@@ -28,30 +28,16 @@ class CompanyController extends Controller
         $company = new Company();
         return response()->view('company.create', compact('company'));
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CompanyRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
-        $validData = $request->validate([
-            'name' => 'required | min:3',
-            'nit' => 'required | numeric | min:5',
-            'email' => 'email',
-            'phone' => 'min:7',
-            'address' => 'max:255',
-        ]);
-    
-        $company = new Company();
-        $company->name = $validData['name'];
-        $company->nit = $validData['nit'];
-        $company->email = $validData['email'];
-        $company->phone = $validData['phone'];
-        $company->address = $validData['address'];
-        $company->save();
+        Company::create($request->validated());
     
         return redirect(route('companies.index'));
     }
@@ -83,44 +69,36 @@ class CompanyController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Company  $company
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, Company $company)
+    public function update(CompanyRequest $request, Company $company)
     {
-        $validData = $request->validate([
-            'name' => 'required | min:3',
-            'nit' => 'required | numeric | min:5 | max:11',
-            'email' => 'email',
-            'phone' => 'min:7 | max:11',
-            'address' => 'max:255',
-        ]);
-    
-        $company->name = $validData['name'];
-        $company->nit = (int)$validData['nit'];
-        $company->email = $validData['email'];
-        $company->phone = (int)$validData['phone'];
-        $company->address = $validData['address'];
-        $company->save();
+        $company->update($request->validated());
     
         return redirect(route('companies.index'));
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Company  $company
-     * @return \Illuminate\Http\Response
+     * @param \App\Company $company
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Exception
      */
     public function destroy(Company $company)
     {
         $company->delete();
-        return redirect('companies.index');
+        return redirect(route('companies.index'));
     }
-
+    
+    /**
+     * Show the form for confirm removal of specified resource.
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
     public function confirmDelete($id){
         $company = Company::findOrFail($id);
-        return view('company.confirmDelete', [
-            'company' => $company
-        ]);
+        return response()->view('company.confirmDelete', compact('company'));
     }
 }

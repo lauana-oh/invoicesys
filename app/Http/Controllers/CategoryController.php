@@ -108,9 +108,6 @@ class CategoryController extends Controller
     public function confirmDelete($id)
     {
         $category = Category::findOrFail($id);
-        $iva = new ivaConverter();
-        $iva->setIvaInteger($category->iva);
-        $category->iva = $iva->convertIvaIntoPercentage();
     
         return response()->view('category.confirmDelete', compact('category'));
     }

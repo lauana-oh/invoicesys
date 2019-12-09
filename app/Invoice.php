@@ -23,7 +23,7 @@ class Invoice extends Model
      */
     public function client(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'client_id')->withDefault();
+        return $this->belongsTo(Company::class, 'client_id')->withTrashed()->withDefault();
     }
     
     /**
@@ -32,7 +32,7 @@ class Invoice extends Model
      */
     public function vendor(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'vendor_id')->withDefault();
+        return $this->belongsTo(Company::class, 'vendor_id')->withTrashed()->withDefault();
     }
     
     /**

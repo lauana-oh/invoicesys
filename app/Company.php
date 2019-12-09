@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\Rules\In;
 
+/**
+ * @method static findOrFail($id)
+ * @method static create(Http\Requests\CompanyRequest $request)
+ */
 class Company extends Model
 {
     use SoftDeletes;
