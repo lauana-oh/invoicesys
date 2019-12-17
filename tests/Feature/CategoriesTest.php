@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Category;
-use App\Http\Helpers\ivaConverter;
 use App\User;
 use Faker\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -133,7 +132,7 @@ class CategoriesTest extends TestCase
         $response->assertSeeText($category->description);
         
         //!!No se pq está generando error!!
-        //$response->assertSeeText($category->ivaFormatted);
+        //$response->assertSee($category->ivaFormatted);
     }
     
     
