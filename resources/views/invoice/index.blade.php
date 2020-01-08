@@ -5,6 +5,7 @@
         <div class="d-flex justify-content-center">
             <h2 class="align-self-end text-center">{{__('Invoices')}}</h2>
         </div>
+
         <div class="card">
             <div class="card-header d-flex justify-content-around align-items-end">
                 <div class="col-lg-4 col-sm-auto justify-content-center">

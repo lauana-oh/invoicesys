@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Http\Requests\CompanyRequest ;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
@@ -14,7 +15,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
+        $companies = Company::paginate(5);
         return response()->view('company.index', compact('companies'));
     }
 
@@ -100,5 +101,19 @@ class CompanyController extends Controller
     public function confirmDelete($id){
         $company = Company::findOrFail($id);
         return response()->view('company.confirmDelete', compact('company'));
+    }
+    
+    /**
+     * Search the specified resource from database.
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $companySearch = $request->companySearch;
+        
+        $companies = Company::search($companySearch)->paginate(6);
+        
+        return response()->view('company.index', compact('companies'));
     }
 }

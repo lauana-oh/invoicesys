@@ -29,6 +29,8 @@ Route::resource('/companies','CompanyController');
 
 Route::get('/companies/{id}/confirmDelete','CompanyController@confirmDelete')->name('companies.confirmDelete');
 
+Route::any('/company/search', 'CompanyController@search')->name('companies.search');
+
 /*------Categories' Routes-----------*/
 Route::resource('/categories','CategoryController');
 

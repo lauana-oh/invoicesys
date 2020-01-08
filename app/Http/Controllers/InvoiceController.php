@@ -118,6 +118,11 @@ class InvoiceController extends Controller
         return response()->view('invoice.confirmDelete', compact('invoice'));
     }
     
+    /**
+     * Search the specified resource from database.
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function search(Request $request)
     {
         $invoiceSearch = $request->invoiceSearch;
