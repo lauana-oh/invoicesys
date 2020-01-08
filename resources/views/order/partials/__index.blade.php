@@ -27,7 +27,7 @@
             <th class="col-2 text-center"><strong> - </strong></th>
             <td class="col-2 input-group justify-content-start">
                 <div><strong>{{$invoice->totalIvaPaidFormatted}}</strong></div>
-                <div class="pl-5"><strong> - </strong></div>
+                <div class="pl-5"><strong>  </strong></div>
             </td>
             <td class="col-2 pl-lg-5"> <strong>{{$invoice->subtotalFormatted}}</strong></td>
             <td class="col-1">

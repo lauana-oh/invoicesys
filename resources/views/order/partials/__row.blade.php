@@ -4,7 +4,7 @@
     <td class="col-2 text-center">{{$order->unitPriceFormatted}}</td>
     <td class="col-2 input-group justify-content-between">
         <div>{{$order->ProductIvaPaidFormatted}}</div>
-        <div class="text-left pr-lg-4">{{$order->productIvaFormatted}}</div>
+        <div class="text-left pr-lg-3">{{$order->productIvaFormatted}}</div>
     </td>
     <td class="col-2 pl-lg-5">{{$order->totalPriceFormatted}} </td>
     <td class="col-1 text-left">
