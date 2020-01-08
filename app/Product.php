@@ -7,6 +7,7 @@ use App\Traits\SaveToUcFirst;
 use App\Support\ProductCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 
 /**
  * @method static findOrFail($id)
@@ -17,6 +18,7 @@ class Product extends Model
     use ColumnFillable;
     use SaveToUcFirst;
     use SoftDeletes;
+    use Searchable;
     
     /**
      * Return Relationship between category and product

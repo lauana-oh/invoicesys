@@ -6,6 +6,7 @@ use App\Traits\ColumnFillable;
 use App\Traits\SaveToUcFirst;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 use Illuminate\Validation\Rules\In;
 
 /**
@@ -17,6 +18,7 @@ class Company extends Model
     use SoftDeletes;
     use ColumnFillable;
     use SaveToUcFirst;
+    use Searchable;
     
     /**
      * Return relationship between client and invoice

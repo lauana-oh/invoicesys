@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Http\Helpers\ReplaceKeys;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Traits\ColumnFillable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 
 /**
  * @method static findOrFail($id)
@@ -16,6 +18,7 @@ class Invoice extends Model
 {
     use ColumnFillable;
     use SoftDeletes;
+    use Searchable;
 
     /**
      * Return relationship between client and invoices
@@ -56,6 +59,20 @@ class Invoice extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class, 'status_id');
+    }
+    
+    /**
+     * Return a searchable array including relationships
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        $invoice = $this->toArray();
+        $client = $this->client->toArray();
+        $vendor = $this->vendor->toArray();
+        $status = $this->status->toArray();
+
+        return array_merge_recursive($invoice, $client, $vendor, $status);
     }
     
     /**

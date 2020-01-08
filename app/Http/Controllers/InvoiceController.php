@@ -9,6 +9,7 @@ use App\Http\Resources\Invoices;
 use App\Invoice;
 use App\Order;
 use App\Status;
+use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
@@ -19,7 +20,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $invoices = Invoice::all();
+        $invoices = Invoice::paginate(7);
         foreach ($invoices as $invoice) {
             $invoice->refreshStatus();
         }
@@ -115,5 +116,14 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::findOrFail($id);
         return response()->view('invoice.confirmDelete', compact('invoice'));
+    }
+    
+    public function search(Request $request)
+    {
+        $invoiceSearch = $request->invoiceSearch;
+        
+        $invoices = Invoice::search($invoiceSearch)->paginate(6);
+        
+        return response()->view('invoice.index', compact('invoices'));
     }
 }
