@@ -112,7 +112,7 @@ class CompanyController extends Controller
     {
         $companySearch = $request->companySearch;
         
-        $companies = Company::search($companySearch)->paginate(6);
+        $companies = Company::search($companySearch)->paginate(5);
         
         return response()->view('company.index', compact('companies'));
     }

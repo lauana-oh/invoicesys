@@ -39,6 +39,17 @@ class Product extends Model
     }
     
     /**
+     * Return array to be searched
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        $product = $this->toArray();
+        $category = $this->category->toArray();
+        
+        return array_merge_recursive($product, $category);
+    }
+    /**
      * Return Product ID in 000 format
      * @return string
      */

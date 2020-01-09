@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Company;
-use App\Http\Requests\StoreInvoice;
 use App\Http\Requests\InvoiceRequest;
-use App\Http\Resources\Invoices;
 use App\Invoice;
 use App\Order;
 use App\Status;
