@@ -7,25 +7,7 @@
         </div>
 
         <div class="card">
-            <div class="card-header d-flex justify-content-around align-items-end">
-                <div class="col-lg-4 col-sm-auto justify-content-center">
-                    <a class="btn btn-primary" href="{{route('invoices.create')}}">{{__('Add a new invoice')}}</a>
-                </div>
-                <div class="col-lg-5 col-sm-auto align-self-auto justify-content-center">
-                    <form action="{{route('invoices.search')}}" method="post" role="search">
-                        @csrf
-                        <div class="input-group md-form form-sm form-1 pl-0">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fas fa-search text-gray" aria-hidden="true"></i>
-                                </span>
-                            </div>
-                            <input aria-label="Search" class="form-control my-0 py-1" id="invoiceSearch"
-                                   name="invoiceSearch" placeholder="Search" type="text">
-                        </div>
-                    </form>
-                </div>
-            </div>
+            @include('invoice.partials.__headerSearchBar')
 
             <div class="card-body container">
                 <table class="table">

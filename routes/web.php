@@ -47,6 +47,8 @@ Route::get('/invoices/{id}/confirmDelete','InvoiceController@confirmDelete')->na
 
 Route::any('/invoice/search', 'InvoiceController@search')->name('invoices.search');
 
+Route::any('invoice/filter', 'InvoiceController@filter')->name('invoices.filter');
+
 /*------Orders' Routes-----------*/
 Route::resource('/invoices/{invoice}/orders','OrderController');
 
