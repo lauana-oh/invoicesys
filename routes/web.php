@@ -38,7 +38,7 @@ Route::resource('/categories','CategoryController');
 
 Route::get('/categories/{id}/confirmDelete','CategoryController@confirmDelete')->name('categories.confirmDelete');
 
-Route::any('/categories/search', 'CategoryController@search')
+Route::any('/categories/search', 'CategoryController@search')->name('categories.search');
 
 /*------Invoices' Routes-----------*/
 Route::resource('/invoices','InvoiceController');

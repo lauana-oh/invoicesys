@@ -40,4 +40,12 @@ class Category extends Model
         return sprintf(" %02.1f%%", $iva->convertIvaIntoPercentage());
     }
     
+    /**
+     * Return array to be searched
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toArray();
+    }
 }
