@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Company;
-use App\Http\Requests\StoreInvoice;
 use App\Http\Requests\InvoiceRequest;
-use App\Http\Resources\Invoices;
+use App\Imports\InvoicesImport;
 use App\Invoice;
 use App\Order;
 use App\Status;
+use App\Exports\InvoicesExport;
+
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InvoiceController extends Controller
 {
@@ -115,5 +118,18 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::findOrFail($id);
         return response()->view('invoice.confirmDelete', compact('invoice'));
+    }
+    
+    public function export()
+    {
+        return Excel::download(new InvoicesExport, 'invoices.xlsx');
+    }
+    
+    public function import(Request $request)
+    {
+        $file = $request->file('importInvoicesFile');
+        Excel::import(new InvoicesImport(), $file);
+        
+        return back();
     }
 }
