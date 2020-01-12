@@ -8,6 +8,9 @@ use App\Invoice;
 use App\Order;
 use App\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class InvoiceController extends Controller
 {
@@ -16,16 +19,24 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::paginate(7);
+        $invoices = QueryBuilder::for(Invoice::class)
+            ->allowedFilters([
+                'invoice_date',
+                'delivery_date',
+                'due_date',
+                AllowedFilter::scope('due_date_between')->ignore(null),
+            ])
+            ->paginate(7);
+    
         foreach ($invoices as $invoice) {
             $invoice->refreshStatus();
         }
         return response()->view('invoice.index', compact('invoices'));
     }
 
-    /**
+    /**compo
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -127,6 +138,51 @@ class InvoiceController extends Controller
         
         $invoices = Invoice::search($invoiceSearch)->paginate(6);
         
+        return response()->view('invoice.index', compact('invoices'));
+    }
+    
+    /**
+     * Filter resource from database.
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Request $request)
+    {
+        if ($request->dueDateStartingIn != null){
+            $filtered = Invoice::all()->where('due_date', '>=', $request->dueDateStartingIn);
+        } else {
+            $filtered = Invoice::all();
+        }
+        
+        if ($request->dueDateEndingIn != null){
+            $filtered = $filtered->where('due_date', '<=', $request->dueDateEndingIn);
+        }
+        
+        if ($request->deliveryDateStartingIn != null){
+            $filtered = $filtered->where('delivery_date', '>=', $request->deliveryDateStartingIn);
+        }
+        
+        if ($request->deliveryDateEndingIn != null){
+            $filtered = $filtered->where('delivery_date', '<=', $request->deliveryDateEndingIn);
+        }
+        
+        if ($request->invoiceDateStartingIn != null){
+            $filtered = $filtered->where('invoice_date','>=', $request->invoiceDateStartingIn);
+        }
+        
+        if ($request->invoiceDateEndingIn != null){
+            $filtered = $filtered->where('invoice_date','<=', $request->invoiceDateEndingIn);
+        }
+        
+        if ($request->minPaid != null){
+            $filtered = $filtered->where('totalPaid', '>=', $request->minPaid);
+        }
+        
+        if ($request->maxPaid != null){
+            $filtered = $filtered->where('totalPaid', '<=', $request->maxPaid);
+        }
+
+        $invoices = $filtered->toArray();
         return response()->view('invoice.index', compact('invoices'));
     }
 }

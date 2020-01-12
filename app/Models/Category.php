@@ -4,8 +4,8 @@ namespace App;
 
 use App\Http\Helpers\ivaConverter;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\ColumnFillable;
-use App\Traits\SaveToUcFirst;
+use App\Models\Traits\ColumnFillable;
+use App\Models\Traits\SaveToUcFirst;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 

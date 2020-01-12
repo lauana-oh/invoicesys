@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Http\Helpers\ivaConverter;
-use App\Traits\ColumnFillable;
+use App\Models\Traits\ColumnFillable;
 use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

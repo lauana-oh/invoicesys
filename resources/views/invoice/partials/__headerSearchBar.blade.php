@@ -5,8 +5,7 @@
     </div>
 
     <div class="col-lg-5 col-sm-auto align-self-auto justify-content-center">
-        <form action="{{route('invoices.search')}}" method="post" role="search">
-            @csrf
+        <form action="{{route('invoices.index')}}" method="get" role="search">
             <div class="input-group md-form form-sm form-1 pl-0">
                 <div class="input-group-prepend">
                                 <span class="input-group-text">
@@ -25,9 +24,11 @@
 <div class="collapse" id="collapseFilter">
     <div class="card card-body">
         <h3 class="pl-5">Filters</h3>
-        <form action="{{route('invoices.filter')}}" method="post" role="search">
-            @csrf
+        <form action="{{route('invoices.index')}}" method="get" role="search" id="invoicesFilter">
             @include('invoice.partials.__filter')
         </form>
+        <button type="submit" class="btn btn-secondary col-3 align-self-end" form="invoicesFilter">
+            <i class="fas 	fa fa-search"></i> {{ __('Search') }}
+        </button>
     </div>
 </div>

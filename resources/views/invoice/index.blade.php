@@ -23,7 +23,7 @@
                         @include('invoice.partials.__row')
                     @endforeach
                 </table>
-                {!! $invoices->links() !!}
+                {!! $invoices->appends(request()->only('filter'))->links() !!}
             </div>
         </div>
     </div>

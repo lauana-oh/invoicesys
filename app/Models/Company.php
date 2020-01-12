@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Traits\ColumnFillable;
-use App\Traits\SaveToUcFirst;
+use App\Models\Traits\ColumnFillable;
+use App\Models\Traits\SaveToUcFirst;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;

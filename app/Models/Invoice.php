@@ -1,13 +1,13 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Traits\ColumnFillable;
+use App\Models\Traits\ColumnFillable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Searchable;
+use App\Models\Concerns\InvoiceHasScopes;
 
 /**
  * @method static findOrFail($id)
@@ -17,7 +17,7 @@ class Invoice extends Model
 {
     use ColumnFillable;
     use SoftDeletes;
-    use Searchable;
+    use InvoiceHasScopes;
 
     /**
      * Return relationship between client and invoices
