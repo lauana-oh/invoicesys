@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
+use App\Models\Company;
 use App\Http\Requests\InvoiceRequest;
-use App\Invoice;
-use App\Order;
-use App\Status;
+use App\Models\Invoice;
+use App\Models\Order;
+use App\Models\Status;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -22,12 +21,13 @@ class InvoiceController extends Controller
     public function index(Request $request)
     {
         $invoices = QueryBuilder::for(Invoice::class)
+            ->join('companies', 'companies.id', 'invoices.client_id')
             ->allowedFilters([
-                'invoice_date',
-                'delivery_date',
-                'due_date',
-                AllowedFilter::scope('due_date_between')->ignore(null),
-            ])
+                AllowedFilter::scope('search')->ignore(null),
+                AllowedFilter::scope('due_date_starts_after')->ignore(null),
+                AllowedFilter::scope('due_date_ends_before')->ignore(null),
+                AllowedFilter::partial('search_bar', null, false)
+                ])
             ->paginate(7);
     
         foreach ($invoices as $invoice) {
@@ -140,49 +140,5 @@ class InvoiceController extends Controller
         
         return response()->view('invoice.index', compact('invoices'));
     }
-    
-    /**
-     * Filter resource from database.
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function filter(Request $request)
-    {
-        if ($request->dueDateStartingIn != null){
-            $filtered = Invoice::all()->where('due_date', '>=', $request->dueDateStartingIn);
-        } else {
-            $filtered = Invoice::all();
-        }
-        
-        if ($request->dueDateEndingIn != null){
-            $filtered = $filtered->where('due_date', '<=', $request->dueDateEndingIn);
-        }
-        
-        if ($request->deliveryDateStartingIn != null){
-            $filtered = $filtered->where('delivery_date', '>=', $request->deliveryDateStartingIn);
-        }
-        
-        if ($request->deliveryDateEndingIn != null){
-            $filtered = $filtered->where('delivery_date', '<=', $request->deliveryDateEndingIn);
-        }
-        
-        if ($request->invoiceDateStartingIn != null){
-            $filtered = $filtered->where('invoice_date','>=', $request->invoiceDateStartingIn);
-        }
-        
-        if ($request->invoiceDateEndingIn != null){
-            $filtered = $filtered->where('invoice_date','<=', $request->invoiceDateEndingIn);
-        }
-        
-        if ($request->minPaid != null){
-            $filtered = $filtered->where('totalPaid', '>=', $request->minPaid);
-        }
-        
-        if ($request->maxPaid != null){
-            $filtered = $filtered->where('totalPaid', '<=', $request->maxPaid);
-        }
 
-        $invoices = $filtered->toArray();
-        return response()->view('invoice.index', compact('invoices'));
-    }
 }

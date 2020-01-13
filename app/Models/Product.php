@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Models\Traits\ColumnFillable;
 use App\Models\Traits\SaveToUcFirst;

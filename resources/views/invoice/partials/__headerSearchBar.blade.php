@@ -13,7 +13,7 @@
                                 </span>
                 </div>
                 <input aria-label="Search" class="form-control my-0 py-1" id="invoiceSearch"
-                       name="invoiceSearch" placeholder="Search" type="text">
+                       name="filter[search]" placeholder="Search" value="{{ request()->input('filter.search') }}" type="text">
                 <a aria-controls="collapseFilter" aria-expanded="false" class="btn btn-primary mx-1" data-toggle="collapse"
                    href="#collapseFilter" role="button">+</a>
             </div>

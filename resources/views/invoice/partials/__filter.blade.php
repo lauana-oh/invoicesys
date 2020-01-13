@@ -3,12 +3,12 @@
         <div class="form-group row d-flex">
             <h6 class="pr-4 align-self-end col-3 text-right"><strong>{{__('Due Date')}}</strong></h6>
             <div class="px-2 col">
-                <input class="form-control" name="filter[due_date_between][1]" placeholder="Start date"
-                       type="date" value="{{ request()->input('filter.due_date_between.1') }}">
+                <input class="form-control" name="filter[due_date_starts_after]" placeholder="Start date"
+                       type="date" value="{{ request()->input('filter.due_date_starts_after') }}">
             </div>
             <div class="px-2 col">
-                <input class="form-control" name="filter[due_date_between][2]" placeholder="Ending date"
-                       type="date" value="{{ request()->input('filter.due_date_between.2') }}">
+                <input class="form-control" name="filter[due_date_ends_before]" placeholder="Ending date"
+                       type="date" value="{{ request()->input('filter.due_date_ends_before') }}">
             </div>
         </div>
 
