@@ -159,7 +159,7 @@ class CompaniesTest extends TestCase
         $response->assertSuccessful();
         $response->assertSeeText($company->id);
         $response->assertSeeText($company->name);
-        $response->assertSee($company->nit);
+        $response->assertSeeText($company->nit);
     }
     
     public function test_unauthenticated_user_cannot_delete_a_company()

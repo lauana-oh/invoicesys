@@ -10,3 +10,7 @@ $factory->define(Status::class, function (Faker $faker) {
         'name' => $faker->unique()->domainWord,
     ];
 });
+
+$factory->state(Status::class, 'paid', [
+    'name' => 'paid',
+]);

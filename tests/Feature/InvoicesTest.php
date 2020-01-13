@@ -34,8 +34,8 @@ class InvoicesTest extends TestCase
     public function test_invoices_list_contains_a_list_of_invoices()
     {
         $user = factory(User::class)->create();
-        $companies = factory(Company::class, 10)->create();
-        $statuses = factory(Status::class, 3)->create();
+        factory(Company::class, 10)->create();
+        $this->seed(\StatusesTableSeeder::class);
         $invoices = factory(Invoice::class, 5)->create();
         
         $response = $this->actingAs($user)->get(route('invoices.index'));
@@ -48,12 +48,13 @@ class InvoicesTest extends TestCase
     
     public function test_unauthenticated_user_cannot_create_a_invoice()
     {
+        $this->seed(\StatusesTableSeeder::class);
         $client = factory(Company::class)->create();
         $vendor = factory(Company::class)->create();
         $dueDate = $this->faker->dateTimeThisYear('+3 month')->format('Y-m-d');
         $deliveryDate = $this->faker->dateTimeThisYear($dueDate)->format('Y-m-d');
         $invoiceDate = $this->faker->dateTimeThisYear($deliveryDate)->format('Y-m-d');
-        $status = factory(Status::class)->create();
+        $status = Status::all()->shuffle()->first();
         
         $this->post(route('invoices.store'), [
             'client_id' => $client->id,
@@ -76,6 +77,7 @@ class InvoicesTest extends TestCase
     
     public function test_a_invoice_can_be_created()
     {
+        $this->seed(\StatusesTableSeeder::class);
         $user = factory(User::class)->create();
         $client = factory(Company::class)->create();
         $vendor = factory(Company::class)->create();
@@ -115,11 +117,11 @@ class InvoicesTest extends TestCase
         $dueDate = $this->faker->dateTimeThisYear('+3 month')->format('Y-m-d');
         $deliveryDate = $this->faker->dateTimeThisYear($dueDate)->format('Y-m-d');
         $invoiceDate = $this->faker->dateTimeThisYear($deliveryDate)->format('Y-m-d');
-        $status = factory(Status::class)->create();
+        $status = Status::all()->shuffle()->first();
         
         $this->put(route('invoices.update', $invoice), [
-            'client_id' => $client->id,
-            'vendor_id' => $vendor->id,
+            'client' => $client->name,
+            'vendor' => $vendor->name,
             'due_date' => $dueDate,
             'delivery_date' => $deliveryDate,
             'invoice_date' => $invoiceDate,
@@ -132,19 +134,19 @@ class InvoicesTest extends TestCase
     public function test_a_category_can_be_updated()
     {
         $user = factory(User::class)->create();
-        $companies = factory(Company::class, 10)->create();
-        $statuses = factory(Status::class, 3)->create();
+        factory(Company::class, 10)->create();
+        $this->seed(\StatusesTableSeeder::class);
         $invoice = factory(Invoice::class)->create();
         $client = factory(Company::class)->create();
         $vendor = factory(Company::class)->create();
         $dueDate = $this->faker->dateTimeThisYear('+3 month')->format('Y-m-d');
         $deliveryDate = $this->faker->dateTimeThisYear($dueDate)->format('Y-m-d');
         $invoiceDate = $this->faker->dateTimeThisYear($deliveryDate)->format('Y-m-d');
-        $status = factory(Status::class)->create();
+        $status = Status::all()->shuffle()->first();
         
         $this->actingAs($user)->put(route('invoices.update', $invoice), [
-            'client_id' => $client->id,
-            'vendor_id' => $vendor->id,
+            'client' => $client->name,
+            'vendor' => $vendor->name,
             'due_date' => $dueDate,
             'delivery_date' => $deliveryDate,
             'invoice_date' => $invoiceDate,
@@ -165,8 +167,8 @@ class InvoicesTest extends TestCase
     public function test_can_be_details_of_a_invoice()
     {
         $user = factory(User::class)->create();
-        $companies = factory(Company::class, 10)->create();
-        $statuses = factory(Status::class, 3)->create();
+        factory(Company::class, 10)->create();
+        $this->seed(\StatusesTableSeeder::class);
         $invoice = factory(Invoice::class)->create();
         
         $response =$this->actingAs($user)->get(route('invoices.show', $invoice));
@@ -187,8 +189,8 @@ class InvoicesTest extends TestCase
     public function test_confirm_delete_shows_invoices_details()
     {
         $user = factory(User::class)->create();
-        $companies = factory(Company::class, 10)->create();
-        $statuses = factory(Status::class, 3)->create();
+        factory(Company::class, 10)->create();
+        $this->seed(\StatusesTableSeeder::class);
         $invoice = factory(Invoice::class)->create();
         
         $response =$this->actingAs($user)->get(route('invoices.confirmDelete', $invoice));
@@ -208,7 +210,7 @@ class InvoicesTest extends TestCase
     public function test_unauthenticated_user_cannot_delete_a_invoice()
     {
         factory(Company::class, 10)->create();
-        factory(Status::class, 3)->create();
+        $this->seed(\StatusesTableSeeder::class);
         $invoice = factory(Invoice::class)->create();
         
         $this->delete(route('invoices.destroy', $invoice))
@@ -221,7 +223,7 @@ class InvoicesTest extends TestCase
     {
         $user = factory(User::class)->create();
         factory(Company::class, 10)->create();
-        factory(Status::class, 3)->create();
+        $this->seed(\StatusesTableSeeder::class);
         $invoice = factory(Invoice::class)->create();
         
         $this->actingAs($user)->delete(route('invoices.destroy', $invoice))

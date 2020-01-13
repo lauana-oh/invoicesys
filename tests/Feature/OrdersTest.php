@@ -21,7 +21,7 @@ class OrdersTest extends TestCase
     public function test_unauthenticated_user_cannot_access_to_orders_list()
     {
         factory(Company::class, 10)->create();
-        factory(Status::class, 3)->create();
+        $this->seed(\StatusesTableSeeder::class);
         $invoice = factory(Invoice::class)->create();
         
         $response = $this->get(route('invoices.show', compact('invoice')));
@@ -33,7 +33,7 @@ class OrdersTest extends TestCase
     {
         $user = factory(User::class)->create();
         factory(Company::class, 10)->create();
-        factory(Status::class, 3)->create();
+        $this->seed(\StatusesTableSeeder::class);
         $invoice = factory(Invoice::class)->create();
         
         $this->actingAs($user)->get(route('invoices.show', compact('invoice')));
@@ -46,7 +46,7 @@ class OrdersTest extends TestCase
         $user = factory(User::class)->create();
         
         factory(Company::class, 10)->create();
-        factory(Status::class, 3)->create();
+        $this->seed(\StatusesTableSeeder::class);
         $invoice = factory(Invoice::class)->create();
         
         factory(Category::class,3)->create();
