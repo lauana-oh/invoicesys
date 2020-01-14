@@ -224,6 +224,6 @@ class OrdersTest extends TestCase
             ->assertRedirect(route('invoices.show', compact('invoice')))
             ->assertSessionHasNoErrors();
         
-        $this->assertDeleted($order);
+        $this->assertDatabaseMissing('orders', compact($order));
     }
 }
