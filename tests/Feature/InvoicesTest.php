@@ -77,15 +77,16 @@ class InvoicesTest extends TestCase
     
     public function test_a_invoice_can_be_created()
     {
-        $this->seed(\StatusesTableSeeder::class);
         $user = factory(User::class)->create();
+        factory(Company::class, 10)->create();
+        $this->seed(\StatusesTableSeeder::class);
         $client = factory(Company::class)->create();
         $vendor = factory(Company::class)->create();
         $dueDate = $this->faker->dateTimeThisYear('+3 month')->format('Y-m-d');
         $deliveryDate = $this->faker->dateTimeThisYear($dueDate)->format('Y-m-d');
         $invoiceDate = $this->faker->dateTimeThisYear($deliveryDate)->format('Y-m-d');
-        $status = factory(Status::class)->create();
-        
+        $status = Status::all()->shuffle()->first();
+    
         $this->actingAs($user)->post(route('invoices.store'), [
             'client' => $client->name,
             'vendor' => $vendor->name,
@@ -109,8 +110,8 @@ class InvoicesTest extends TestCase
     
     public function test_unauthenticated_user_cannot_update_a_invoice()
     {
-        $companies = factory(Company::class, 10)->create();
-        $statuses = factory(Status::class, 3)->create();
+        factory(Company::class, 10)->create();
+        $this->seed(\StatusesTableSeeder::class);
         $invoice = factory(Invoice::class)->create();
         $client = factory(Company::class)->create();
         $vendor = factory(Company::class)->create();

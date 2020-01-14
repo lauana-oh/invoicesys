@@ -53,13 +53,22 @@ class OrderRequest extends FormRequest
         return $data;
     }
     
-    public function orderUpdateData($invoice)
+    public function orderUpdateData($invoice, $order)
     {
         $data = $this->validated();
         $product = clone Product::all()->keyBy('name')->get($this->validated()['product']);
     
-        $data['product_id'] = $product->id;
-        unset($data['product']);
+        $data['invoice_id'] = $invoice->id;
+        
+        if ($order['product_id'] !== $product->id) {
+            $data['product_id'] = $product->id;
+            $data['unit_price'] = $product->unit_price;
+            $data['product_iva'] = $product->category->iva;
+        } else {
+            $data['product_id'] = $order->product_id;
+            $data['unit_price'] = $order->unit_price;
+            $data['product_iva'] = $order->product_iva;
+        }
         
         return $data;
     }
