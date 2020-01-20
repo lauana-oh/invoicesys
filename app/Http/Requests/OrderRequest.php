@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Product;
+use App\Rules\UniqueOrderRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,14 +28,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'quantity' => 'required | numeric | min:0.01',
-            'product' => [
-                'required ',
-                'exists:products,name',
-//                'unique:orders,invoice_id,'.$this->invoice_id.',id',
-//                Rule::unique('orders')->ignore($this->id)->where(function ($query) {
-//                    $query->where('invoice_id', $this->invoice_id);
-//                })
-                ]
+            'product' => array('required ', 'exists:products,name', new UniqueOrderRule($this->input('invoice_id'))),
             ];
     }
 
