@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Traits\ColumnFillable;
-use App\Models\Traits\SaveToUcFirst;
+use App\Models\Concerns\ColumnFillable;
+use App\Models\Concerns\SaveToUcFirst;
 use App\Support\ProductCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Searchable;
 
 /**
  * @method static findOrFail($id)
@@ -18,7 +17,6 @@ class Product extends Model
     use ColumnFillable;
     use SaveToUcFirst;
     use SoftDeletes;
-    use Searchable;
     
     /**
      * Return Relationship between category and product

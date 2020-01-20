@@ -16,7 +16,7 @@ class StatusesTableSeeder extends Seeder
         Status::create(['name' => 'sent']);
         Status::create(['name' => 'paid']);
         Status::create(['name' => 'overdue']);
-        Status::create(['name' => 'canceled']);
+        Status::create(['name' => 'cancelled']);
         Status::create(['name' => 'write-off']);
     }
 }

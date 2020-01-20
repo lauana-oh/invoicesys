@@ -4,10 +4,9 @@ namespace App\Models;
 
 use App\Http\Helpers\ivaConverter;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Traits\ColumnFillable;
-use App\Models\Traits\SaveToUcFirst;
+use App\Models\Concerns\ColumnFillable;
+use App\Models\Concerns\SaveToUcFirst;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
 
 /**
  * @method static findOrFail($id)
@@ -18,7 +17,6 @@ class Category extends Model
     use SoftDeletes;
     use ColumnFillable;
     use SaveToUcFirst;
-    use Searchable;
     
     /**
      * Return relationship between category and products

@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Laravel\Scout\Searchable;
 
 class Status extends Model
 {
-    use Searchable;
     /**
      * Return relationship between status and invoices
      * @return HasMany

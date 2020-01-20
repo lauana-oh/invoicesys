@@ -21,14 +21,21 @@ class InvoiceController extends Controller
     public function index(Request $request)
     {
         $invoices = QueryBuilder::for(Invoice::class)
-            ->join('companies', 'companies.id', 'invoices.client_id')
+            ->allowedIncludes(['status'])
             ->allowedFilters([
                 AllowedFilter::scope('search')->ignore(null),
                 AllowedFilter::scope('due_date_starts_after')->ignore(null),
                 AllowedFilter::scope('due_date_ends_before')->ignore(null),
-                AllowedFilter::partial('search_bar', null, false)
+                AllowedFilter::scope('delivery_date_starts_after')->ignore(null),
+                AllowedFilter::scope('delivery_date_ends_before')->ignore(null),
+                AllowedFilter::scope('invoice_date_starts_after')->ignore(null),
+                AllowedFilter::scope('invoice_date_ends_before')->ignore(null),
+                AllowedFilter::scope('invoice_min_total')->ignore(null),
+                AllowedFilter::scope('invoice_max_total')->ignore(null),
+                AllowedFilter::scope('status_filter')->ignore(null),
                 ])
-            ->paginate(7);
+            ->paginate()
+            ->appends(request()->query());
     
         foreach ($invoices as $invoice) {
             $invoice->refreshStatus();

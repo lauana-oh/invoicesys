@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Traits\ColumnFillable;
-use App\Models\Traits\SaveToUcFirst;
+use App\Models\Concerns\ColumnFillable;
+use App\Models\Concerns\SaveToUcFirst;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Searchable;
 
 /**
  * @method static findOrFail($id)
@@ -17,7 +16,6 @@ class Company extends Model
     use SoftDeletes;
     use ColumnFillable;
     use SaveToUcFirst;
-    use Searchable;
     
     /**
      * Return relationship between client and invoice

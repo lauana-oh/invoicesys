@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Models\Formats;
+namespace App\Models\Concerns;
 
 
 trait InvoiceFormatting
