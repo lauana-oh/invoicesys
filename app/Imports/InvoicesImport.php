@@ -3,11 +3,16 @@
 namespace App\Imports;
 
 use App\Invoice;
+use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Validators\Failure;
 
-class InvoicesImport implements ToModel, WithHeadingRow
+class InvoicesImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFailure
 {
+    use SkipsFailures;
     /**
     * @param array $row
     *
@@ -23,5 +28,28 @@ class InvoicesImport implements ToModel, WithHeadingRow
             'due_date' => $row['due_date'],
             'status_id' => $row['status_id']
         ]);
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function rules(): array
+    {
+        return [
+            'client_id' => 'required | exists:companies,id',
+            'vendor_id' => 'required | exists:companies,id',
+            'invoice_date' => 'required | date',
+            'delivery_date' => 'required | date | after_or_equal:invoice_date',
+            'due_date' => 'required | date | after_or_equal:delivery_date',
+            'status_id' => 'required | exists:statuses,id',
+        ];
+    }
+    
+    /**
+     * @inheritDoc
+     */
+    public function onFailure(Failure ...$failures)
+    {
+        // TODO: Implement onFailure() method.
     }
 }
