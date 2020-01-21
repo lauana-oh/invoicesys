@@ -53,6 +53,7 @@
         <h6><strong>{{__('Status')}}</strong></h6>
 
         <div class="form-check">
+            <input type="hidden" name="filter[status_filter][1]" value=0>
             <input class="form-check-input" type="checkbox" name="filter[status_filter][1]" value="draft" id="statusDraft">
             <label class="form-check-label" for="statusDraft">
                 {{__('Draft')}}
@@ -60,6 +61,7 @@
         </div>
 
         <div class="form-check">
+            <input type="hidden" name="filter[status_filter][2]" value=0>
             <input class="form-check-input" type="checkbox" name="filter[status_filter][2]" value="sent" id="statusSent">
             <label class="form-check-label" for="statusSent">
                 {{__('Sent')}}
@@ -67,6 +69,7 @@
         </div>
 
         <div class="form-check">
+            <input type="hidden" name="filter[status_filter][3]" value=0>
             <input class="form-check-input" type="checkbox"  name="filter[status_filter][3]" value="paid" id="statusPaid">
             <label class="form-check-label" for="statusPaid">
                 {{__('Paid')}}
@@ -74,6 +77,7 @@
         </div>
 
         <div class="form-check">
+            <input type="hidden" name="filter[status_filter][4]" value=0>
             <input class="form-check-input" type="checkbox"  name="filter[status_filter][4]" value="overdue" id="statusOverdue">
             <label class="form-check-label" for="statusOverdue">
                 {{__('Overdue')}}
@@ -81,6 +85,7 @@
         </div>
 
         <div class="form-check">
+            <input type="hidden" name="filter[status_filter][5]" value=0>
             <input class="form-check-input" type="checkbox"  name="filter[status_filter][5]" value="write-off" id="statusWriteOff">
             <label class="form-check-label" for="statusWriteOff">
                 {{__('Write-off')}}
@@ -88,6 +93,7 @@
         </div>
 
         <div class="form-check">
+            <input type="hidden" name="filter[status_filter][6]" value=0>
             <input class="form-check-input" type="checkbox"  name="filter[status_filter][6]" value="cancelled" id="statusCancelled">
             <label class="form-check-label" for="statusCancelled">
                 {{__('Canceled')}}

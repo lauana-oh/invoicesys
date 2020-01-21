@@ -17,6 +17,8 @@ trait InvoiceHasScopes {
             return $query->statusName($term);
         }
         
+        
+        
         return $query->where('invoices.id', $term);
     }
     
@@ -79,19 +81,21 @@ trait InvoiceHasScopes {
         return $query->whereIn('id', $invoices_id);
     }
     
-    public function scopeStatusFilter(Builder $query, string $draft = null, $sent = null, $paid = null, $overdue = null, $writeOff = null, $cancelled = null)
+    public function scopeStatusFilter(Builder $query, $draft, $sent , $paid, $overdue, $writeOff, $cancelled): Builder
     {
-        dd($query->statusDraft());
-        return $query->statusSelected($draft);
+        return $query->statusSelected($draft, 'or')
+            ->statusSelected($sent, 'or')
+            ->statusSelected($paid, 'or')
+            ->statusSelected($overdue, 'or')
+            ->statusSelected($writeOff, 'or')
+            ->statusSelected($cancelled);
     }
     
-    public function scopeStatusDraft(Builder $query, $draft = null)
+    public function scopeStatusSelected(Builder $query, string $term = null, $boolean = 'or' ): Builder
     {
-        return $query->statusName($draft);
-    }
-    
-    public function scopeStatusSelected(Builder $query, string $term = null, $boolean = 'or' )
-    {
-        return $query->statusName($term);
+        if(in_array($term, ['draft', 'overdue', 'sent', 'paid', 'cancelled', 'write-off'])) {
+            return $query->statusName($term);
+        }
+        return $query;
     }
 }
