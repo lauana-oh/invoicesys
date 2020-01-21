@@ -72,7 +72,7 @@ class OrderController extends Controller
      */
     public function update(OrderRequest $request, Invoice $invoice, Order $order)
     {
-        $order->update($request->orderUpdateData($invoice));
+        $order->update($request->orderUpdateData($invoice, $order));
     
         return redirect()->route('invoices.show', $invoice->id);
     }

@@ -4,13 +4,13 @@
             <h1>Sales Invoice</h1>
         </div>
         <div class="col-6">
-            <div class="list-unstyled">
+            <ul class="list-unstyled">
                 <li><strong>{{__('Due Date')}}:</strong> {{$invoice->due_date}}</li>
                 <li><strong>{{__('Delivery Date')}}:</strong> {{$invoice->delivery_date}}</li>
                 <li><strong>{{__('Invoice Date')}}:</strong> {{$invoice->invoice_date}}</li>
                 <li><strong>{{__('Status')}}:</strong> {{$invoice->status->name}}</li>
                 <li><strong>{{__('Total')}}:</strong> {{$invoice->totalPaidFormatted}}</li>
-            </div>
+            </ul>
         </div>
     </div>
 

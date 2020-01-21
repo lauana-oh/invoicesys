@@ -20,9 +20,9 @@ trait SaveToUcFirst
     {
         parent::setAttribute($key, $value);
         if (is_string($value)) {
-            if (!in_array($key, $this->no_uppercase)) {
-                $this->attributes[$key] = trim(ucfirst($value));
-            }
+                if (!in_array($key, $this->no_uppercase)) {
+                    $this->attributes[$key] = trim(ucfirst($value));
+                }
         }
     }
 }
