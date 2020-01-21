@@ -1,12 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Traits\ColumnFillable;
-use App\Traits\SaveToUcFirst;
+use App\Models\Concerns\ColumnFillable;
+use App\Models\Concerns\SaveToUcFirst;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Validation\Rules\In;
 
 /**
  * @method static findOrFail($id)
@@ -33,6 +32,15 @@ class Company extends Model
      */
     public function invoicesAsVendor()
     {
-        return$this->hasMany(Invoice::class,'vendor_id');
+        return $this->hasMany(Invoice::class,'vendor_id');
+    }
+    
+    /**
+     * Return array to be searched
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toArray();
     }
 }

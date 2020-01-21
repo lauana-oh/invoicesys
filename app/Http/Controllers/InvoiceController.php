@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
-use App\Http\Requests\StoreInvoice;
+use App\Models\Company;
 use App\Http\Requests\InvoiceRequest;
-use App\Http\Resources\Invoices;
-use App\Invoice;
-use App\Order;
-use App\Status;
+use App\Models\Invoice;
+use App\Models\Order;
+use App\Models\Status;
+use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class InvoiceController extends Controller
 {
@@ -17,16 +18,32 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::all();
+        $invoices = QueryBuilder::for(Invoice::class)
+            ->allowedIncludes(['status'])
+            ->allowedFilters([
+                AllowedFilter::scope('search')->ignore(null),
+                AllowedFilter::scope('due_date_starts_after')->ignore(null),
+                AllowedFilter::scope('due_date_ends_before')->ignore(null),
+                AllowedFilter::scope('delivery_date_starts_after')->ignore(null),
+                AllowedFilter::scope('delivery_date_ends_before')->ignore(null),
+                AllowedFilter::scope('invoice_date_starts_after')->ignore(null),
+                AllowedFilter::scope('invoice_date_ends_before')->ignore(null),
+                AllowedFilter::scope('invoice_min_total')->ignore(null),
+                AllowedFilter::scope('invoice_max_total')->ignore(null),
+                AllowedFilter::scope('status_filter')->ignore(null),
+                ])
+            ->paginate()
+            ->appends(request()->query());
+    
         foreach ($invoices as $invoice) {
             $invoice->refreshStatus();
         }
         return response()->view('invoice.index', compact('invoices'));
     }
 
-    /**
+    /**compo
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -116,4 +133,19 @@ class InvoiceController extends Controller
         $invoice = Invoice::findOrFail($id);
         return response()->view('invoice.confirmDelete', compact('invoice'));
     }
+    
+    /**
+     * Search the specified resource from database.
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $invoiceSearch = $request->invoiceSearch;
+        
+        $invoices = Invoice::search($invoiceSearch)->paginate(6);
+        
+        return response()->view('invoice.index', compact('invoices'));
+    }
+
 }
