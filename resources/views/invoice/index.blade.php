@@ -2,15 +2,12 @@
 
 @section('content')
     <div class="container col-lg-9 col-md-12">
+        <div class="d-flex justify-content-center">
+            <h2 class="align-self-end text-center">{{__('Invoices')}}</h2>
+        </div>
+
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-end">
-                <div class="col-lg-3 col-sm-auto">
-                    <h4>{{__('Invoices')}}</h4>
-                </div>
-                <div class="col-lg-3 col-sm-auto align-self-auto">
-                    <a class="btn btn-primary" href="{{route('invoices.create')}}">{{__('Add a new invoice')}}</a>
-                </div>
-            </div>
+            @include('invoice.partials.__headerSearchBar')
 
             <div class="card-body container">
                 <table class="table">
@@ -26,6 +23,7 @@
                         @include('invoice.partials.__row')
                     @endforeach
                 </table>
+                {!! $invoices->appends(request()->only('filter'))->links() !!}
             </div>
         </div>
     </div>
