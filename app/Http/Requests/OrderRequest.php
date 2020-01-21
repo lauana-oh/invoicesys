@@ -5,7 +5,6 @@ namespace App\Http\Requests;
 use App\Product;
 use App\Rules\UniqueOrderRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class OrderRequest extends FormRequest
 {

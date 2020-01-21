@@ -165,7 +165,9 @@ return [
         /*
          * Package Service Providers...
          */
+
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        // Laravel\Scout\ScoutServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -1,12 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Models\Concerns\InvoiceFormatting;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Traits\ColumnFillable;
+use App\Models\Concerns\ColumnFillable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Concerns\InvoiceHasScopes;
 
 /**
  * @method static findOrFail($id)
@@ -16,7 +18,14 @@ class Invoice extends Model
 {
     use ColumnFillable;
     use SoftDeletes;
-
+    use InvoiceHasScopes;
+    use InvoiceFormatting;
+    
+    protected $casts = [
+        'created_at' => 'datetime:d-m-Y',
+        'updated_at' => 'datetime:d-m-Y',
+    ];
+    
     /**
      * Return relationship between client and invoices
      * @return BelongsTo
@@ -44,11 +53,6 @@ class Invoice extends Model
         return $this->hasMany(Order::class, 'invoice_id');
     }
     
-    protected $casts = [
-        'created_at' => 'datetime:d-m-Y',
-        'updated_at' => 'datetime:d-m-Y',
-    ];
-    
     /**
      * Return relationship between invoice and status
      * @return BelongsTo
@@ -59,83 +63,20 @@ class Invoice extends Model
     }
     
     /**
-     * Return Id in #000000 format
-     * @return string
+     * Return a searchable array including relationships
+     * @return array
      */
-    public function getIdFormattedAttribute(): string
+    public function toSearchableArray()
     {
-        return sprintf(" #%'06s", $this->id);
+        $invoice = $this->toArray();
+        $client = $this->client->toArray();
+        $vendor = $this->vendor->toArray();
+        $status = $this->status->toArray();
+
+        return array_merge_recursive($invoice, $client, $vendor, $status);
     }
     
-    /**
-     * Return Total of invoice in money format
-     * @return string
-     */
-    public function getTotalPaidFormattedAttribute()
-    {
-        setlocale(LC_MONETARY, 'es_CO.UTF-8');
-        return money_format(" %.2n", $this->totalPaid);
-    }
-    
-    /**
-     * Return total of invoice in number format
-     * @return float
-     */
-    public function getTotalPaidAttribute(): float
-    {
-        $total=0;
-        $orders = $this->orders;
-        foreach ($orders as $order){
-            $total += $order->totalPrice;
-        }
-        return $total;
-    }
-    
-    /**
-     * Return subtotal of invoice in money format
-     * @return string
-     */
-    public function getSubtotalFormattedAttribute()
-    {
-        setlocale(LC_MONETARY, 'es_CO.UTF-8');
-        return money_format(" %.2n", $this->subtotal);
-    }
-    
-    /**
-     * Return total of invoice in number format
-     * @return float
-     */
-    public function getSubtotalAttribute(): float
-    {
-        $total = $this->totalPaid;
-        $ivaPaid = $this->totalIvaPaid;
-        return $total-$ivaPaid;
-    }
-    
-    /**
-     * Return total IVA of invoice in money format
-     * @return string
-     */
-    public function getTotalIvaPaidFormattedAttribute()
-    {
-        setlocale(LC_MONETARY, 'es_CO.UTF-8');
-        return money_format(" %.2n", $this->totalIvaPaid);
-    }
-    
-    /**
-     * Return total IVA of invoice in number format
-     * @return float
-     */
-    public function getTotalIvaPaidAttribute(): float
-    {
-        $totalIvaPaid=0;
-        $orders = $this->orders;
-        foreach ($orders as $order){
-            $totalIvaPaid += $order->productIvaPaid;
-        }
-        return $totalIvaPaid;
-    }
-    
+
     /**
      * Return invoice data store or update after validation
      * @param $request

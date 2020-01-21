@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Http\Helpers\ivaConverter;
-use App\Traits\ColumnFillable;
-use App\Traits\SaveToUcFirst;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Concerns\ColumnFillable;
+use App\Models\Concerns\SaveToUcFirst;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static findOrFail($id)
@@ -38,4 +38,12 @@ class Category extends Model
         return sprintf(" %02.1f%%", $iva->convertIvaIntoPercentage());
     }
     
+    /**
+     * Return array to be searched
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toArray();
+    }
 }
