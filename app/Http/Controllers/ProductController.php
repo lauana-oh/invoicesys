@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Http\Helpers\ivaConverter;
+use App\Models\Category;
 use App\Http\Requests\ProductRequest;
-use App\Product;
+use App\Models\Product;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,7 +20,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::paginate(10);
         return response()->view('product.index', compact('products'));
     }
 
@@ -112,5 +111,19 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         
         return response()->view('product.confirmDelete', compact('product'));
+    }
+    
+    /**
+     * Search the specified resource from database.
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $productSearch = $request->productSearch;
+
+        $products = Product::search($productSearch)->paginate(6);
+
+        return response()->view('product.index', compact('products'));
     }
 }

@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
-use App\Http\Requests\StoreInvoice;
+use App\Models\Company;
 use App\Http\Requests\InvoiceRequest;
-use App\Http\Resources\Invoices;
-use App\Invoice;
-use App\Order;
-use App\Status;
+use App\Imports\InvoicesImport;
+use App\Models\Invoice;
+use App\Models\Order;
+use App\Models\Status;
+use App\Exports\InvoicesExport;
+use Illuminate\Http\Request;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class InvoiceController extends Controller
 {
@@ -17,16 +22,32 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::all();
+        $invoices = QueryBuilder::for(Invoice::class)
+            ->allowedIncludes(['status'])
+            ->allowedFilters([
+                AllowedFilter::scope('search')->ignore(null),
+                AllowedFilter::scope('due_date_starts_after')->ignore(null),
+                AllowedFilter::scope('due_date_ends_before')->ignore(null),
+                AllowedFilter::scope('delivery_date_starts_after')->ignore(null),
+                AllowedFilter::scope('delivery_date_ends_before')->ignore(null),
+                AllowedFilter::scope('invoice_date_starts_after')->ignore(null),
+                AllowedFilter::scope('invoice_date_ends_before')->ignore(null),
+                AllowedFilter::scope('invoice_min_total')->ignore(null),
+                AllowedFilter::scope('invoice_max_total')->ignore(null),
+                AllowedFilter::scope('status_filter')->ignore(null),
+                ])
+            ->paginate(10)
+            ->appends(request()->query());
+    
         foreach ($invoices as $invoice) {
             $invoice->refreshStatus();
         }
         return response()->view('invoice.index', compact('invoices'));
     }
 
-    /**
+    /**compo
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -115,5 +136,19 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::findOrFail($id);
         return response()->view('invoice.confirmDelete', compact('invoice'));
+    }
+    
+
+    public function export()
+    {
+        return Excel::download(new InvoicesExport, 'invoices.xlsx');
+    }
+    
+    public function import(Request $request)
+    {
+        $file = $request->file('importInvoicesFile');
+        Excel::import(new InvoicesImport(), $file);
+        
+        return back();
     }
 }
