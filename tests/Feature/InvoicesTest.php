@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Company;
-use App\Invoice;
-use App\Status;
-use App\User;
+use App\Models\Company;
+use App\Models\Invoice;
+use App\Models\Status;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
