@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Status;
+use App\Status;
 use Illuminate\Database\Seeder;
 
 class StatusesTableSeeder extends Seeder
@@ -16,7 +16,7 @@ class StatusesTableSeeder extends Seeder
         Status::create(['name' => 'sent']);
         Status::create(['name' => 'paid']);
         Status::create(['name' => 'overdue']);
-        Status::create(['name' => 'cancelled']);
+        Status::create(['name' => 'canceled']);
         Status::create(['name' => 'write-off']);
     }
 }

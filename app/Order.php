@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use App\Http\Helpers\ivaConverter;
-use App\Models\Concerns\ColumnFillable;
+use App\Traits\ColumnFillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Order extends Model
 {
     use ColumnFillable;
-
     /**
      * Return relationship between invoice and orders
      * @return BelongsTo

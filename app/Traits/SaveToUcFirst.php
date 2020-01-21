@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Concerns;
+namespace App\Traits;
 
 use Illuminate\Support\Facades\Schema;
 
@@ -19,10 +19,8 @@ trait SaveToUcFirst
     public function setAttribute($key, $value)
     {
         parent::setAttribute($key, $value);
-        if (is_string($value)) {
-            if (!in_array($key, $this->no_uppercase)) {
-                $this->attributes[$key] = trim(ucfirst($value));
-            }
-        }
+        
+        if (is_string($value))
+            $this->attributes[$key] = trim(ucfirst($value));
     }
 }

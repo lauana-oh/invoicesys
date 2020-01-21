@@ -21,7 +21,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(5);
+        $products = Product::all();
         return response()->view('product.index', compact('products'));
     }
 
@@ -112,19 +112,5 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         
         return response()->view('product.confirmDelete', compact('product'));
-    }
-    
-    /**
-     * Search the specified resource from database.
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $productSearch = $request->productSearch;
-
-        $products = Product::search($productSearch)->paginate(6);
-
-        return response()->view('product.index', compact('products'));
     }
 }

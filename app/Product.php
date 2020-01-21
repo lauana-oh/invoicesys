@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
-use App\Models\Concerns\ColumnFillable;
-use App\Models\Concerns\SaveToUcFirst;
+use App\Traits\ColumnFillable;
+use App\Traits\SaveToUcFirst;
 use App\Support\ProductCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -36,17 +36,6 @@ class Product extends Model
         return $this->hasMany(Order::class, 'product_id');
     }
     
-    /**
-     * Return array to be searched
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        $product = $this->toArray();
-        $category = $this->category->toArray();
-        
-        return array_merge_recursive($product, $category);
-    }
     /**
      * Return Product ID in 000 format
      * @return string

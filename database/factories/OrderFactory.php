@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\Order;
+use App\Order;
 use Faker\Generator as Faker;
 
 $factory->define(Order::class, function (Faker $faker) {
@@ -11,8 +11,8 @@ $factory->define(Order::class, function (Faker $faker) {
     static $productIdFactory;
     $combinations = $combinations ?: [[]];
     do {
-        $invoiceIdFactory = \App\Models\Invoice::all()->keyBy('id')->keys()->random();
-        $productIdFactory = \App\Models\Product::all()->keyBy('id')->keys()->random();
+        $invoiceIdFactory = \App\Invoice::all()->keyBy('id')->keys()->random();
+        $productIdFactory = \App\Product::all()->keyBy('id')->keys()->random();
     } while (in_array([$invoiceIdFactory, $productIdFactory], $combinations));
     $combinations[] = [$invoiceIdFactory, $productIdFactory];
     

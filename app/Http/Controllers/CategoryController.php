@@ -6,7 +6,6 @@ use App\Category;
 use App\Http\Helpers\ivaConverter;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -17,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(5);
+        $categories = Category::all();
         return response()->view('category.index',compact('categories'));
     }
 
@@ -111,19 +110,5 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
     
         return response()->view('category.confirmDelete', compact('category'));
-    }
-    
-    /**
-     * Search the specified resource from database.
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $categorySearch = $request->categorySearch;
-        
-        $categories = Category::search($categorySearch)->paginate(5);
-        
-        return response()->view('category.index', compact('categories'));
     }
 }

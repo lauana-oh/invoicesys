@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Product;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class OrderRequest extends FormRequest
 {
