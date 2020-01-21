@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Invoice;
+use App\Models\Invoice;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;

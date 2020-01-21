@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Product;
+use App\Models\Product;
 use App\Rules\UniqueOrderRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -27,7 +27,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'quantity' => 'required | numeric | min:0.01',
-            'product' => array('required ', 'exists:products,name', new UniqueOrderRule($this->input('invoice_id'))),
+            'product' => array('required ', 'exists:products,name', new UniqueOrderRule($this->input('invoice_id'), $this->input('order_id'))),
             ];
     }
 

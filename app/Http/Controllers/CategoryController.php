@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\Models\Category;
 use App\Http\Helpers\ivaConverter;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Http\RedirectResponse;
@@ -17,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(5);
+        $categories = Category::paginate(10);
         return response()->view('category.index',compact('categories'));
     }
 

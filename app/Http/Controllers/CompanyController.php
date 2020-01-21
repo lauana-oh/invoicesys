@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Company;
+use App\Models\Company;
 use App\Http\Requests\CompanyRequest ;
 use Illuminate\Http\Request;
 
@@ -15,7 +15,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::paginate(5);
+        $companies = Company::paginate(10);
         return response()->view('company.index', compact('companies'));
     }
 

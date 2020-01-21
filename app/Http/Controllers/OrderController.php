@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\Models\Category;
 use App\Http\Helpers\ivaConverter;
 use App\Http\Requests\OrderRequest;
-use App\Http\Requests\OrderVRequest;
-use App\Invoice;
-use App\Order;
-use App\Product;
+use App\Models\Invoice;
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 
 class OrderController extends Controller
@@ -37,22 +36,24 @@ class OrderController extends Controller
         
         return redirect()->route('invoices.show', $invoice->id);
     }
-
+    
     /**
      * Display the specified resource.
      *
-     * @param  \App\Order  $order
+     * @param Invoice $invoice
+     * @param Order $order
      * @return \Illuminate\Http\Response
      */
     public function show(Invoice $invoice, Order $order)
     {
         return response()->view('order.show', compact('invoice', 'order'));
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Order  $order
+     * @param Invoice $invoice
+     * @param Order $order
      * @return \Illuminate\Http\Response
      */
     public function edit(Invoice $invoice,Order $order)
@@ -60,12 +61,13 @@ class OrderController extends Controller
         $products = Product::all()->withCategoryAvailable();
         return response()->view('order.edit', compact('invoice', 'order', 'products'));
     }
-
+    
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Order  $order
+     * @param OrderRequest $request
+     * @param Invoice $invoice
+     * @param Order $order
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(OrderRequest $request, Invoice $invoice, Order $order)
@@ -78,7 +80,8 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Order $order
+     * @param Invoice $invoice
+     * @param Order $order
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */

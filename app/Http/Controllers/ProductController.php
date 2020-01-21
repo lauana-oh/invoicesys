@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\Http\Helpers\ivaConverter;
+use App\Models\Category;
 use App\Http\Requests\ProductRequest;
-use App\Product;
+use App\Models\Product;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,7 +20,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(5);
+        $products = Product::paginate(10);
         return response()->view('product.index', compact('products'));
     }
 

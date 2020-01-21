@@ -38,7 +38,7 @@ class InvoiceController extends Controller
                 AllowedFilter::scope('invoice_max_total')->ignore(null),
                 AllowedFilter::scope('status_filter')->ignore(null),
                 ])
-            ->paginate()
+            ->paginate(10)
             ->appends(request()->query());
     
         foreach ($invoices as $invoice) {

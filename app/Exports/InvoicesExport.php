@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Invoice;
+use App\Models\Invoice;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;

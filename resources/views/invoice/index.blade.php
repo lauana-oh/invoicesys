@@ -9,23 +9,7 @@
         <div class="card">
             @include('invoice.partials.__headerSearchBar')
             <div class="collapse" id="collapseImport">
-                <div class="card-body d-flex justify-content-around col-8">
-                    <div class="col">
-                        <form action="{{ route('invoices.import') }}" enctype="multipart/form-data"
-                              method="post">
-                            @csrf
-                            <div class="form-group">
-                                <label for="importInvoicesFile">{{__('Import invoices file')}}</label>
-                                    <input type="file" class="form-control-file" id="importInvoicesFile" name="importInvoicesFile">
-                            </div>
-                            <button type="submit" class="btn btn-outline-primary py-2">{{__('Submit')}}</button>
-                        </form>
-                    </div>
-                    <div class="col text-right">
-                        <h6>Export invoices</h6>
-                        <a href="{{ route('invoices.export') }}" class="btn btn-outline-primary"> Export </a>
-                    </div>
-                </div>
+
             </div>
 
             <div class="card-body container">
@@ -34,6 +18,8 @@
                         <th class="col-1 text-center">{{__('ID')}}</th>
                         <th class="col-3">{{__('Client')}}</th>
                         <th class="col text-center">{{__('Due Date')}}</th>
+                        <th class="col text-center">{{__('Delivery Date')}}</th>
+                        <th class="col text-center">{{__('Invoice Date')}}</th>
                         <th class="col text-center">{{__('Total')}}</th>
                         <th class="col text-center">{{__('Status')}}</th>
                         <th class=" col-1 text-center"></th>

@@ -1,4 +1,5 @@
 <div class="form-row form-group">
+    <input type="hidden" name="order_id" value="{{$order->id}}">
     <div class="col col-3">
         <label for="quantity">Quantity:</label>
         <input type="number" class="form-control" id="quantity" name="quantity" step="1"

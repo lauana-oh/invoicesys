@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Company;
+use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
 
 class InvoiceRequest extends FormRequest
