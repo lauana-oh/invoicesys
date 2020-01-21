@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Http\Requests\InvoiceRequest;
+use App\Imports\InvoicesImport;
 use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\Status;
+use App\Exports\InvoicesExport;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class InvoiceController extends Controller
 {
@@ -134,18 +138,17 @@ class InvoiceController extends Controller
         return response()->view('invoice.confirmDelete', compact('invoice'));
     }
     
-    /**
-     * Search the specified resource from database.
-     * @param Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $invoiceSearch = $request->invoiceSearch;
-        
-        $invoices = Invoice::search($invoiceSearch)->paginate(6);
-        
-        return response()->view('invoice.index', compact('invoices'));
-    }
 
+    public function export()
+    {
+        return Excel::download(new InvoicesExport, 'invoices.xlsx');
+    }
+    
+    public function import(Request $request)
+    {
+        $file = $request->file('importInvoicesFile');
+        Excel::import(new InvoicesImport(), $file);
+        
+        return back();
+    }
 }

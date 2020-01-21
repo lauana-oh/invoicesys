@@ -45,9 +45,9 @@ Route::resource('/invoices','InvoiceController');
 
 Route::get('/invoices/{id}/confirmDelete','InvoiceController@confirmDelete')->name('invoices.confirmDelete');
 
-Route::any('/invoice/search', 'InvoiceController@search')->name('invoices.search');
+Route::get('/invoices-export','InvoiceController@export')->name('invoices.export');
 
-Route::any('invoice/filter', 'InvoiceController@filter')->name('invoices.filter');
+Route::post('/invoices-import','InvoiceController@import')->name('invoices.import');
 
 /*------Orders' Routes-----------*/
 Route::resource('/invoices/{invoice}/orders','OrderController');
