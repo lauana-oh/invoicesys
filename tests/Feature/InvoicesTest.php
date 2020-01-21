@@ -46,6 +46,19 @@ class InvoicesTest extends TestCase
         $response->assertSeeText($invoices->shuffle()->first()->name);
     }
     
+    public function test_authenticated_user_can_see_a_invoice_creating_form()
+    {
+        $user = factory(User::class)->create();
+        factory(Company::class, 10)->create();
+        $this->seed(\StatusesTableSeeder::class);
+        
+        $response = $this->actingAs($user)->get(route('invoices.create'));
+    
+        $response->assertSuccessful();
+        $response->assertViewIs('invoice.create');
+        $response->assertSee('invoices-form');
+    }
+    
     public function test_unauthenticated_user_cannot_create_a_invoice()
     {
         $this->seed(\StatusesTableSeeder::class);
@@ -106,6 +119,20 @@ class InvoicesTest extends TestCase
             ->where('status_id', $status->id)
             ->first();
         $this->assertNotNull($invoice);
+    }
+    
+    public function test_authenticated_user_can_see_a_invoice_updating_form()
+    {
+        $user = factory(User::class)->create();
+        factory(Company::class, 10)->create();
+        $this->seed(\StatusesTableSeeder::class);
+        $invoice = factory(Invoice::class)->create();
+    
+        $response = $this->actingAs($user)->get(route('invoices.edit', $invoice));
+        
+        $response->assertSuccessful();
+        $response->assertViewIs('invoice.edit');
+        $response->assertSee('invoices-form');
     }
     
     public function test_unauthenticated_user_cannot_update_a_invoice()
